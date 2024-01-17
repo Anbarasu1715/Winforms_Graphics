@@ -1,0 +1,10 @@
+C:\Users\Anbarasan\source\C-Sharp\GaphicsDesign\GaphicsDesign\bin\Debug\GaphicsDesign.exe.config
+C:\Users\Anbarasan\source\C-Sharp\GaphicsDesign\GaphicsDesign\bin\Debug\GaphicsDesign.exe
+C:\Users\Anbarasan\source\C-Sharp\GaphicsDesign\GaphicsDesign\bin\Debug\GaphicsDesign.pdb
+C:\Users\Anbarasan\source\C-Sharp\GaphicsDesign\GaphicsDesign\obj\Debug\GaphicsDesign.csprojAssemblyReference.cache
+C:\Users\Anbarasan\source\C-Sharp\GaphicsDesign\GaphicsDesign\obj\Debug\GaphicsDesign.Form1.resources
+C:\Users\Anbarasan\source\C-Sharp\GaphicsDesign\GaphicsDesign\obj\Debug\GaphicsDesign.Properties.Resources.resources
+C:\Users\Anbarasan\source\C-Sharp\GaphicsDesign\GaphicsDesign\obj\Debug\GaphicsDesign.csproj.GenerateResource.cache
+C:\Users\Anbarasan\source\C-Sharp\GaphicsDesign\GaphicsDesign\obj\Debug\GaphicsDesign.csproj.CoreCompileInputs.cache
+C:\Users\Anbarasan\source\C-Sharp\GaphicsDesign\GaphicsDesign\obj\Debug\GaphicsDesign.exe
+C:\Users\Anbarasan\source\C-Sharp\GaphicsDesign\GaphicsDesign\obj\Debug\GaphicsDesign.pdb

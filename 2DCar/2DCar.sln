@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 15 for Windows Desktop
+VisualStudioVersion = 15.0.27703.2047
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2DCar", "2DCar\2DCar.csproj", "{5B18156D-DB2D-486A-AEB2-D04908D996F2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5B18156D-DB2D-486A-AEB2-D04908D996F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B18156D-DB2D-486A-AEB2-D04908D996F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B18156D-DB2D-486A-AEB2-D04908D996F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B18156D-DB2D-486A-AEB2-D04908D996F2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {04617274-93A2-49BD-A30D-2F90EB3EB866}
+	EndGlobalSection
+EndGlobal
