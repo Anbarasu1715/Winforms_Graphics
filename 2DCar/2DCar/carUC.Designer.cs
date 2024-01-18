@@ -35,7 +35,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Name = "carUC";
-            this.Size = new System.Drawing.Size(314, 150);
+            this.Size = new System.Drawing.Size(210, 112);
             this.ResumeLayout(false);
 
         }
