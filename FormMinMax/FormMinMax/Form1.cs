@@ -23,6 +23,8 @@ namespace FormMinMax
             Btn3 = new Rectangle(button3.Location,button3.Size);
             Btn4 = new Rectangle(button4.Location,button4.Size);
             Btn5 = new Rectangle(button5.Location,button5.Size);
+
+            this.Focus();
         }
 
         private Point minPoint = new Point(625,340);
@@ -40,6 +42,7 @@ namespace FormMinMax
         private Rectangle Btn4;
         private Rectangle Btn5;
 
+
         private void Form1_Move(object sender, EventArgs e)
         {
             // textBox1.Text = Location+"    "+Size;
@@ -48,7 +51,7 @@ namespace FormMinMax
 
         private void Form1_Resize(object sender, EventArgs e)
         {
-            resizeControl(button1,Btn1);
+            resizeControl(button1, Btn1);
             resizeControl(button2, Btn2);
             resizeControl(button3, Btn3);
             resizeControl(button4, Btn4);
@@ -76,7 +79,7 @@ namespace FormMinMax
                 case "Maximize":
                     Location = maxPoint;
                     Size = maxSize;
-                    BtnText= "Minimize";
+                    BtnText = "Minimize";
                     obj?.Dispose();
                     break;
                 case "Minimize":
@@ -98,7 +101,7 @@ namespace FormMinMax
                 obj = new MinMaxControl(BtnText);
                 
 
-                if (ClickedLocation.X + obj.Width >= Width)
+                if (ClickedLocation.X + obj.Width >= Width-25)
                 {
                     ClickedLocation.X = ClickedLocation.X - obj.Width-15;
                 }

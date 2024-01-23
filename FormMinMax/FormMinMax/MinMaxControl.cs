@@ -18,8 +18,6 @@ namespace FormMinMax
             button.Text = text;
         }
 
-        private string BtnText = "Maximize";
-
         public event EventHandler<EventArgs> OnBtnClick;
 
         private void button_Click(object sender, EventArgs e)

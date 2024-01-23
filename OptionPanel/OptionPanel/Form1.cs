@@ -72,6 +72,8 @@ namespace OptionPanel
             g?.Dispose();
             g = e.Graphics;
             Brush brush = new SolidBrush(Color.Blue);
+            g.SmoothingMode = SmoothingMode.HighQuality;
+            g.CompositingQuality = CompositingQuality.HighQuality;
 
             //GraphicsPath path = new GraphicsPath();
             
