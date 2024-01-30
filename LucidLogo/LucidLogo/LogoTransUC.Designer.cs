@@ -36,7 +36,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Name = "LogoTransUC";
             this.Size = new System.Drawing.Size(304, 286);
+            this.Load += new System.EventHandler(this.LogoTransUC_Load);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.LogoTransUC_Paint);
+            this.Resize += new System.EventHandler(this.LogoTransUC_Resize);
             this.ResumeLayout(false);
 
         }

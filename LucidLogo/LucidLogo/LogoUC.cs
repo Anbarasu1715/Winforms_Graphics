@@ -21,7 +21,7 @@ namespace LucidLogo
         {
             this.BackColor = Color.FromArgb(13, 98, 177);
             g = e.Graphics;
-            g.SmoothingMode = SmoothingMode.HighQuality;
+            g.SmoothingMode = SmoothingMode.HighQuality;   
 
             int rX = (Width / 2) - 25;
             int rY = (Height / 2) - 15;

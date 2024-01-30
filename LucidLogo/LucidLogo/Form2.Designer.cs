@@ -1,6 +1,6 @@
 ﻿namespace LucidLogo
 {
-    partial class Form1
+    partial class Form2
     {
         /// <summary>
         /// Required designer variable.
@@ -28,33 +28,20 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.logoTransUC1 = new LucidLogo.LogoTransUC();
             this.SuspendLayout();
             // 
-            // logoTransUC1
-            // 
-            this.logoTransUC1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.logoTransUC1.Location = new System.Drawing.Point(0, 0);
-            this.logoTransUC1.Name = "logoTransUC1";
-            this.logoTransUC1.Size = new System.Drawing.Size(326, 659);
-            this.logoTransUC1.TabIndex = 0;
-            // 
-            // Form1
+            // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.Window;
-            this.ClientSize = new System.Drawing.Size(326, 659);
-            this.Controls.Add(this.logoTransUC1);
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.ClientSize = new System.Drawing.Size(800, 498);
+            this.Name = "Form2";
+            this.Text = "Form2";
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form2_Paint);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private LogoTransUC logoTransUC1;
     }
 }
-
