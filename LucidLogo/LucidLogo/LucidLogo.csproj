@@ -69,6 +69,12 @@
     <Compile Include="LogoUC.Designer.cs">
       <DependentUpon>LogoUC.cs</DependentUpon>
     </Compile>
+    <Compile Include="newLogo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="newLogo.Designer.cs">
+      <DependentUpon>newLogo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
@@ -82,6 +88,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="LogoUC.resx">
       <DependentUpon>LogoUC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="newLogo.resx">
+      <DependentUpon>newLogo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

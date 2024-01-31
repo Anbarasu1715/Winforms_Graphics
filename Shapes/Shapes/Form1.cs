@@ -10,7 +10,52 @@ using System.Windows.Forms;
 
 namespace Shapes
 {
-    public partial class Form1 : Form
+
+    public abstract class Shape {
+        protected Rectangle rectangle;
+
+
+        public abstract void Draw(Graphics g,Brush brush);
+    }
+
+    public class EllipseShape : Shape {
+
+        public EllipseShape(Rectangle rec) {
+            rectangle = rec;
+        }
+
+        public override void Draw(Graphics g, Brush brush)
+        {
+            g.FillEllipse(brush,rectangle);
+        }
+    }
+
+    public class RectangleShape : Shape {
+
+        public RectangleShape(Rectangle rec) {
+            rectangle = rec;
+        }
+
+        public override void Draw(Graphics g, Brush brush)
+        {
+            g.FillRectangle(brush,rectangle);
+        }
+    }
+
+    public class TriangleShape : Shape {
+        private Point[] points;
+
+        public TriangleShape(Point[] points) {
+            this.points = points;
+        }
+
+        public override void Draw(Graphics g, Brush brush)
+        {
+            g.FillPolygon(brush,points);
+        }
+    }
+
+    public partial class Form1 : Form 
     {
         public Form1()
         {
@@ -24,8 +69,9 @@ namespace Shapes
         private Rectangle rec;
         private bool isDragging=false;
         private Graphics g;
+        private Point[] points=new Point[3];
 
-        private List<Rectangle> rectangles = new List<Rectangle>();
+        private List<Shape> shapes = new List<Shape>();
 
         private void DrawShape(Object sender,string text) {
             box?.Dispose();
@@ -34,33 +80,7 @@ namespace Shapes
 
         private void Form1_MouseClick(object sender, MouseEventArgs e)
         {
-            box?.Dispose();
-            if (e.Button==MouseButtons.Right) {
-                
-                Point CurrentClick = (new Point(e.X,e.Y));
-
-                box = new SelectionBox();
-
-                if (CurrentClick.X+box.Width>=Width-17)
-                {
-                    CurrentClick.X = CurrentClick.X - box.Width;
-                }
-                if (CurrentClick.Y+box.Height>=Height-40) {
-                    CurrentClick.Y = CurrentClick.Y - box.Height;
-                }
-
-                textBox1.Text = "" + CurrentClick + "    " ;
-
-                box.Location = PointToScreen(CurrentClick);
-                box.OnEventclick += DrawShape;
-                box.Show();
-            }
-            else if (e.Button==MouseButtons.Left)
-            {
-                cursorPoint = e.Location;
-                Invalidate();
-                isDragging = true;
-            }
+            
         }
 
         private void Form1_Paint(object sender, PaintEventArgs e)
@@ -70,11 +90,31 @@ namespace Shapes
 
                 g = e.Graphics;
                 Brush brush = new SolidBrush(Color.Green);
+                DoubleBuffered = true;
 
                 switch (selectedShape) {
                     case "Circle":
                         if (isDragging == false) {
                             rec = new Rectangle();
+                            
+                        }
+                        else if (isDragging)
+                        {
+                            rec.Location = cursorPoint;
+                            //int size = Math.Max(movingPoint.X - cursorPoint.X, movingPoint.Y - cursorPoint.Y);
+                            rec.Size = new Size(movingPoint.X - cursorPoint.X, movingPoint.Y - cursorPoint.Y);
+
+                            //rec.Location = cursorPoint;
+                            //rec.Size = new Size(size,size);
+                            g.FillEllipse(brush, rec);
+                        }
+                        break;
+
+                    case "Rectangle":
+                        if (isDragging == false)
+                        {
+                            rec = new Rectangle();
+
                         }
                         else if (isDragging)
                         {
@@ -104,7 +144,7 @@ namespace Shapes
                             {
                                 rec.Location = cursorPoint;
                                 //size = Math.Min(width,height);
-                                rec.Size = new Size(size, size);
+                                rec.Size = new Size(movingPoint.X - cursorPoint.X, movingPoint.Y - cursorPoint.Y);
                             }
 
                             //rec.Location = cursorPoint;
@@ -112,6 +152,27 @@ namespace Shapes
                             g.FillRectangle(brush, rec);
                         }
                         break;
+
+                    case "Triangle":
+                        if (!isDragging)
+                            rec = new Rectangle();
+                        else {
+                            int x1=movingPoint.X;
+                            int y1=movingPoint.Y;
+                            int x2=cursorPoint.X;
+                            int y2=movingPoint.Y;
+                            int x3=movingPoint.X-((movingPoint.X- cursorPoint.X) /2);
+                            int y3=cursorPoint.Y;
+                            points[0] = new Point(x1, y1);
+                            points[1] = new Point(x2, y2);
+                            points[2] = new Point(x3, y3);
+                            g.FillPolygon(brush,points);
+                        }
+                        break;
+                }
+
+                foreach (Shape shape in shapes) {
+                    shape.Draw(g,brush);
                 }
             }
         }
@@ -127,8 +188,54 @@ namespace Shapes
 
         private void Form1_MouseUp(object sender, MouseEventArgs e)
         {
+            if (isDragging)
+            {
+                if (selectedShape == "Circle") {
+                    shapes.Add(new EllipseShape(rec));
+                }
+                else if (selectedShape == "Rectangle") {
+                    shapes.Add(new RectangleShape(rec));
+                }
+                else if (selectedShape=="Triangle") {
+                    shapes.Add(new TriangleShape(points));
+                }
+            }
             isDragging = false;
-            rectangles.Add(rec);
+        }
+
+        private void Form1_MouseDown(object sender, MouseEventArgs e)
+        {
+            box?.Dispose();
+            if (e.Button == MouseButtons.Right)
+            {
+
+                Point CurrentClick = (new Point(e.X, e.Y));
+
+                box = new SelectionBox();
+
+                if (CurrentClick.X + box.Width >= Width - 17)
+                {
+                    CurrentClick.X = CurrentClick.X - box.Width;
+                }
+                if (CurrentClick.Y + box.Height >= Height - 40)
+                {
+                    CurrentClick.Y = CurrentClick.Y - box.Height;
+                }
+
+
+
+                box.Location = PointToScreen(CurrentClick);
+                box.OnEventclick += DrawShape;
+                box.Show();
+            }
+            else if (e.Button == MouseButtons.Left)
+            {
+                cursorPoint = e.Location;
+                Invalidate();
+                isDragging = true;
+                movingPoint = e.Location;
+            }
+            textBox1.Text = "" + e.Location + "    ";
         }
     }
 }

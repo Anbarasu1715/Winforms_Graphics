@@ -1,6 +1,6 @@
 ﻿namespace LucidLogo
 {
-    partial class LogoTransUC
+    partial class FullLogo
     {
         /// <summary> 
         /// Required designer variable.
@@ -28,19 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.SuspendLayout();
-            // 
-            // LogoTransUC
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            components = new System.ComponentModel.Container();
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Name = "LogoTransUC";
-            this.Size = new System.Drawing.Size(1144, 286);
-            this.Load += new System.EventHandler(this.LogoTransUC_Load);
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.LogoTransUC_Paint);
-            this.Resize += new System.EventHandler(this.LogoTransUC_Resize);
-            this.ResumeLayout(false);
-
         }
 
         #endregion

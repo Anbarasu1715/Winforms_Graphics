@@ -41,7 +41,7 @@
             this.btn1.Name = "btn1";
             this.btn1.Size = new System.Drawing.Size(116, 37);
             this.btn1.TabIndex = 0;
-            this.btn1.Text = "Circle";
+            this.btn1.Text = "Ellipse";
             this.btn1.UseVisualStyleBackColor = false;
             this.btn1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.btn_MouseClick);
             // 
