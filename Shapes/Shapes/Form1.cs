@@ -62,6 +62,14 @@ namespace Shapes
             InitializeComponent();
         }
 
+        protected override CreateParams CreateParams {
+            get {
+                CreateParams handleParam = base.CreateParams;
+                handleParam.ExStyle |= 0x02000000;
+                return handleParam;
+            }
+        }
+
         private SelectionBox box;
         private string selectedShape;
         private Point cursorPoint;

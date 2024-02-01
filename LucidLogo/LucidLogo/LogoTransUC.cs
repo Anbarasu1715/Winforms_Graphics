@@ -18,7 +18,25 @@ namespace LucidLogo
             InitializeComponent();
             timer.Interval = 1;
             timer.Tick += Transition;
-            
+            switch (GetDirection) {
+                case Direction.ClockWise:
+                    currentPoly = 0;
+                    break;
+                case Direction.AntiClockWise:
+                    currentPoly = 7;
+                    break;
+            }
+        }
+
+        public enum Direction {
+            ClockWise,
+            AntiClockWise
+        }
+        
+        public Direction GetDirection
+        {
+            get;
+            set;
         }
 
         private Graphics g;
@@ -26,7 +44,8 @@ namespace LucidLogo
         private Timer timer = new Timer();
         private List<Point[]> points = new List<Point[]>();
         private List<Point[]> fixedPoints = new List<Point[]>();
-        private int currentPoly=0;
+        private int currentPoly;
+        private int EndPoly ;
         private int transitionCount = 0;
         private int minPoint;
         private int X1=0, Y1 = 0;
@@ -147,14 +166,14 @@ namespace LucidLogo
             {
                 transitionCount = 0;
                 fixedPoints.Add(points[currentPoly]);
-                currentPoly++;
+                currentPoly+=(GetDirection== Direction.ClockWise) ? 1:-1;
             }
-            if (currentPoly > 7)
+            if ((GetDirection== Direction.ClockWise) ? currentPoly > 7 :currentPoly<0)
             {
                 points.Clear();
                 fixedPoints.Clear();
                 initialCoordinates();
-                currentPoly = 0;
+                currentPoly = (GetDirection == Direction.ClockWise) ? 0:7;
             }
         }
 
@@ -326,7 +345,7 @@ namespace LucidLogo
 
         private void LogoTransUC_Resize(object sender, EventArgs e)
         {
-            minPoint= Math.Min(Width,Height);
+
             //if (Height > Width) {
             //    X1 = 0;
             //    Y1 =(Height-Width)/2;
@@ -336,7 +355,7 @@ namespace LucidLogo
             //    X1 = (Width-Height)/2;
             //}
 
-
+            minPoint = Math.Min(Width, Height);
             if (Height * 4 <= Width)
             {
                 size = Height;
