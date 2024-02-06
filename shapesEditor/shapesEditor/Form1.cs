@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -20,6 +21,7 @@ namespace shapesEditor
             public Point[] polyPoints;
             public abstract Rectangle GetRectangle();
             //public abstract Rectangle SetRectangle();
+            public abstract Point[] GetPoints();
             public abstract void Draw(Graphics g,Pen pen);
             public abstract void UpdateWidth(int newWidth);
             public abstract void UpdateHeight(int newHeight);
@@ -63,6 +65,11 @@ namespace shapesEditor
             {
                 g.DrawRectangle(pen,shape);
             }
+
+            public override Point[] GetPoints()
+            {
+                throw new NotImplementedException();
+            }
         }
 
         public class EllipseShape : Shape
@@ -100,6 +107,11 @@ namespace shapesEditor
             public override void Draw(Graphics g, Pen pen)
             {
                 g.DrawEllipse(pen, shape);
+            }
+
+            public override Point[] GetPoints()
+            {
+                throw new NotImplementedException();
             }
         }
 
@@ -143,6 +155,11 @@ namespace shapesEditor
             {
                 g.DrawPolygon(pen, polyPoints);
             }
+
+            public override Point[] GetPoints()
+            {
+                return polyPoints;
+            }
         }
 
         public Form1()
@@ -165,10 +182,24 @@ namespace shapesEditor
         private Point movingPoint;
         private Rectangle rectangle;
         private bool isDragging = false;
-        private bool isMoving = false;
+        private bool isResize = false;
         private bool isSelected = false;
         private bool isModified=false;
+        private bool isMoving=false;
+        private bool upLeft = false;
+        private bool upRight = false;
+        private bool downLeft = false;
+        private bool downRight = false;
+        private bool top = false;
+        private bool left = false;
+        private bool right = false;
+        private bool down = false;
         private List<Shape> shapes = new List<Shape>();
+        private Point[] points;
+        private Point loc;
+        private int offsetX;
+        private int offsetY;
+
 
         private Graphics g;
         private Pen pen;
@@ -184,7 +215,6 @@ namespace shapesEditor
             rectangle.Location = clickPoint;
             rectangle.Size = new Size(movingPoint);
             paintPanel.Invalidate();
-            //g.DrawRectangle(pen1, rectangle);
         }
 
         private void DrawRectangle(Pen pen)
@@ -236,31 +266,6 @@ namespace shapesEditor
                 int height = movingPoint.Y - clickPoint.Y;
                 int size;
 
-                //if (width < 0 && height < 0)
-                //{
-                //    rectangle.Location = new Point(movingPoint.X, movingPoint.Y);
-                //    size = Math.Max(clickPoint.X - movingPoint.X, clickPoint.Y - movingPoint.Y);
-                //    rectangle.Size = new Size(size,size);
-                //}
-                //else if (width < 0 && height > 0)
-                //{
-                //    rectangle.Location = new Point(movingPoint.X, clickPoint.Y);
-                //    size = Math.Max(clickPoint.X - movingPoint.X, movingPoint.Y - clickPoint.Y);
-                //    rectangle.Size = new Size(size, size);
-                //}
-                //else if (width > 0 && height < 0)
-                //{
-                //    rectangle.Location = new Point(clickPoint.X, movingPoint.Y);
-                //    size = Math.Max(movingPoint.X - clickPoint.X, clickPoint.Y - movingPoint.Y);
-                //    rectangle.Size = new Size(size, size);
-                //}
-                //else if (width > 0 && height > 0)
-                //{
-                //    rectangle.Location = clickPoint;
-                //    size = Math.Min(width, height);
-                //    rectangle.Size = new Size(size, size);
-                //}
-
                 rectangle.Size = new Size(movingPoint.X - clickPoint.X, movingPoint.Y - clickPoint.Y);
                 rectangle.Location = clickPoint;
 
@@ -274,28 +279,32 @@ namespace shapesEditor
                 rectangle = new Rectangle();
             else
             {
+                points = new Point[3];
                 int x1 = movingPoint.X;
                 int y1 = movingPoint.Y;
                 int x2 = clickPoint.X;
                 int y2 = movingPoint.Y;
                 int x3 = movingPoint.X - ((movingPoint.X - clickPoint.X) / 2);
                 int y3 = clickPoint.Y;
-                //points[0] = new Point(x1, y1);
-                //points[1] = new Point(x2, y2);
-                //points[2] = new Point(x3, y3);
-                //g.FillPolygon(brush, points);
+                points[0] = new Point(x1, y1);
+                points[1] = new Point(x2, y2);
+                points[2] = new Point(x3, y3);
+                g.DrawPolygon(pen, points);
             }
         }
 
         private void paintPanel_Paint(object sender, PaintEventArgs e)
         {
+
             g = e.Graphics;
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
             DoubleBuffered = true;
+            typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, paintPanel, new object[] { true });
+
 
             pen = new Pen(Color.Black,3);
 
-            if (selectShape!=null)
+            if (selectShape!=null && !isResize)
             {
                 switch (selectShape)
                 {
@@ -306,7 +315,7 @@ namespace shapesEditor
                             
                         }
                         else
-                            DrawRectangle(pen);
+                             DrawRectangle(pen);
                         break;
                     case "Circle":
                         if (isModified)
@@ -317,14 +326,25 @@ namespace shapesEditor
                         else
                             DrawEllipse(pen);
                         break;
+                    case "Triangle":
+                        if (isModified)
+                        {
+                            //g.DrawEllipse(pen, rectangle);
+
+                        }
+                        else
+                            DrawTriangle(pen);
+                        break;
                 }
             }
 
             foreach (Shape shape in shapes)
             {
                 shape.Draw(g,pen);
-                //richTextBox1.Text += shape.GetRectangle().Location+"";
             }
+
+            if (clickedShape != null)
+                clickedShape.Draw(g,new Pen(Color.Red,3));
 
             //pen.Dispose();
         }
@@ -336,7 +356,7 @@ namespace shapesEditor
 
         private void paintPanel_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left && selectShape != null && !isSelected)
+            if (e.Button == MouseButtons.Left && selectShape != null && !isSelected )
             {
                 isDragging = true;
                 isSelected = false;
@@ -346,17 +366,211 @@ namespace shapesEditor
                 paintPanel.Invalidate();
             }
             clickPoint = e.Location;
+            if (clickedShape != null)
+            {
+                offsetX = e.Location.X - clickedShape.GetRectangle().Location.X;
+                offsetY = e.Location.Y - clickedShape.GetRectangle().Location.Y;
+            }
             movingPoint = e.Location;
+
+            upLeft = false;
+            upRight = false;
+            downLeft = false;
+            downRight = false;
+            top = false;
+            left = false;
+            right = false;
+            down = false;
+            isMoving=false;
+            isResize = false;
+
         }
 
         private void paintPanel_MouseMove(object sender, MouseEventArgs e)
         {
+            //textBox1.Text = "" + e.Location;
+            //textBox2.Text = "" + paintPanel.PointToScreen(e.Location);
+            //textBox3.Text = "" + paintPanel.PointToClient(paintPanel.PointToScreen(e.Location));
+            //isResize = false;
+
             if (e.Button == MouseButtons.Left && !isSelected)
             {
                 isDragging = true;
-                isMoving = true;
                 movingPoint = e.Location;
                 paintPanel.Invalidate();
+            }
+
+            if (clickedShape!=null) {
+                isMoving = true;
+                int sHeight = clickedShape.GetRectangle().Height;
+                int sWidth = clickedShape.GetRectangle().Width;
+                int sX = clickedShape.GetRectangle().Location.X;
+                int sY = clickedShape.GetRectangle().Location.Y;
+
+                if (e.X >= sX && e.X <= sX + 15 && e.Y >= sY && e.Y <= sY + 15) {
+                    isMoving = false;
+                    this.Cursor = Cursors.SizeNWSE;
+                    upLeft = true;
+                }
+                else if (e.X >= sX && e.X <= sX + 15 && e.Y <= sY + sHeight && e.Y >= sY + sHeight - 15) {
+                    this.Cursor = Cursors.SizeNESW;
+                    downLeft = true;
+                }
+                else if (e.X <= sX + sWidth && e.X >= sX + sWidth - 15 && e.Y >= sY && e.Y <= sY + 15) {
+                    this.Cursor = Cursors.SizeNESW;
+                    upRight = true;
+                }
+                else if (e.X <= sX + sWidth && e.X >= sX + sWidth - 15 && e.Y <= sY + sHeight && e.Y >= sY + sHeight - 15)
+                {
+                    this.Cursor = Cursors.SizeNWSE;
+                    downRight = true;
+                }
+                else if (e.X >= sX + 15 && e.X <= sX + sWidth - 15 && e.Y >= sY - 5 && e.Y <= sY + 5) {
+                    this.Cursor = Cursors.SizeNS;
+                    top = true;
+                }
+                else if (e.X >= sX + 15 && e.X <= sX + sWidth - 15 && e.Y >= sY + sHeight - 5 && e.Y <= sY + sHeight + 5) {
+                    this.Cursor = Cursors.SizeNS;
+                    down = true;
+                }
+                else if (e.X>=sX-5 && e.X<=sX+5 && e.Y>=sY+15 && e.Y<=sY+sHeight-15) {
+                    this.Cursor = Cursors.SizeWE;
+                    left = true;
+                }
+                else if (e.X>=sX+sWidth-5 && e.X<=sX+sWidth+5 && e.Y>=sY+15 && e.Y<=sY+sHeight-15) {
+                    this.Cursor = Cursors.SizeWE;
+                    right = true;
+                }
+                else
+                {
+                    Cursor = Cursors.Arrow;
+                }
+
+
+                if (upLeft && e.Button == MouseButtons.Left)
+                {
+
+                    isResize = true;
+                    foreach (Shape shape in shapes)
+                    {
+                        if (shape == clickedShape)
+                        {
+                            shape.UpdateHeight(loc.Y - e.Y);
+                            shape.UpdateWidth(loc.X - e.X);
+                            shape.UpdateLocation(e.Location);
+
+                            paintPanel.Invalidate();
+                        }
+                    }
+                }
+                else if (downRight && e.Button == MouseButtons.Left) {
+                    isResize = true;
+                    foreach (Shape shape in shapes)
+                    {
+                        if (shape == clickedShape)
+                        {
+                            loc = shape.GetRectangle().Location;
+                            shape.UpdateHeight((e.Y - (loc.Y)));
+                            shape.UpdateWidth((e.X - (loc.X)));
+
+                            paintPanel.Invalidate();
+                        }
+                    }
+                }
+                else if (downLeft && e.Button == MouseButtons.Left) {
+                    isResize = true;
+                    foreach (Shape shape in shapes)
+                    {
+                        if (shape == clickedShape)
+                        {
+                            shape.UpdateHeight(e.Y - shape.GetRectangle().Location.Y);
+                            shape.UpdateWidth((loc.X - e.X));
+                            shape.UpdateLocation(new Point(e.X, shape.GetRectangle().Location.Y));
+
+                            paintPanel.Invalidate();
+                        }
+                    }
+                }
+                else if (upRight && e.Button == MouseButtons.Left) {
+                    isResize = true;
+                    foreach (Shape shape in shapes)
+                    {
+                        if (shape == clickedShape)
+                        {
+                            shape.UpdateHeight(loc.Y - e.Y);
+                            shape.UpdateWidth(e.X - shape.GetRectangle().Location.X);
+                            shape.UpdateLocation(new Point(shape.GetRectangle().Location.X, e.Y));
+
+                            paintPanel.Invalidate();
+                        }
+                    }
+                }
+                else if (top && e.Button == MouseButtons.Left) {
+                    isResize = true;
+                    foreach (Shape shape in shapes)
+                    {
+                        if (shape == clickedShape)
+                        {
+                            shape.UpdateHeight(loc.Y - e.Y);
+                            shape.UpdateLocation(new Point(shape.GetRectangle().Location.X, e.Y));
+
+                            paintPanel.Invalidate();
+                        }
+                    }
+                }
+                else if (down && e.Button == MouseButtons.Left) {
+                    isResize = true;
+                    foreach (Shape shape in shapes)
+                    {
+                        if (shape == clickedShape)
+                        {
+                            
+                           shape.UpdateHeight(e.Y-clickedShape.GetRectangle().Location.Y);
+
+                            paintPanel.Invalidate();
+                        }
+                    }
+                }
+                else if (left && e.Button == MouseButtons.Left) {
+                    isResize = true;
+                    foreach (Shape shape in shapes)
+                    {
+                        if (shape == clickedShape)
+                        {
+                            
+                           shape.UpdateWidth(loc.X - e.X);
+                           shape.UpdateLocation(new Point(e.X,shape.GetRectangle().Location.Y));
+
+                            paintPanel.Invalidate();
+                        }
+                    }
+                }
+                else if (right && e.Button == MouseButtons.Left) {
+                    isResize = true;
+                    foreach (Shape shape in shapes)
+                    {
+                        if (shape == clickedShape)
+                        {
+                            
+                           shape.UpdateWidth(e.X-clickedShape.GetRectangle().Location.X);
+
+                            paintPanel.Invalidate();
+                        }
+                    }
+                }
+
+                if (!isResize && e.Button == MouseButtons.Left && e.X >= sX + 7 && e.X <= sX + sWidth - 7 && e.Y >= sY + 7 && e.Y <= sY + sHeight - 7)
+                {
+                    foreach (Shape shape in shapes)
+                    {
+                        if (shape == clickedShape)
+                        {
+                            isMoving = true;
+                            shape.UpdateLocation(new Point(e.X-offsetX,e.Y-offsetY));
+                            paintPanel.Invalidate();
+                        }
+                    }
+                }
             }
         }
 
@@ -374,12 +588,28 @@ namespace shapesEditor
                         shapes.Add(new EllipseShape(rectangle));
                         isModified = false;
                         break;
+                    case "Triangle":
+                        shapes.Add(new PolygonShape(points));
+                        isModified = false;
+                        break;
                 }
                 
                 isDragging = false;
-                isMoving = false;
+                isResize = false;
+
+                
 
             }
+            upLeft = false;
+            upRight = false;
+            downLeft = false;
+            downRight = false;
+            top = false;
+            left = false;
+            right = false;
+            down = false;
+            isMoving = false;
+            loc = new Point(0,0);
 
             if (clickPoint.X - movingPoint.X == 0 && clickPoint.Y - movingPoint.Y == 0 && shapes.Count > 0)
             {
@@ -387,16 +617,23 @@ namespace shapesEditor
                 clickPoint = e.Location;
                 foreach (Shape shape in shapes)
                 {
+
+                    if (shape.GetName() == "Triangle")
+                        continue;
+
                     int x = shape.GetRectangle().Location.X;
                     int y = shape.GetRectangle().Location.Y;
                     int width = shape.GetRectangle().Size.Width;
                     int height = shape.GetRectangle().Size.Height;
 
+
                     if (clickPoint.X >= x && clickPoint.X <= x+width && clickPoint.Y >= y && clickPoint.Y <= y+height)
                     {
                         clickedShape = shape;
+                        paintPanel.Invalidate();
                         selectShape = shape.GetName();
-                        textBox1.Text = clickedShape.GetRectangle().Location + "";
+                        loc.X = shape.GetRectangle().Location.X+shape.GetRectangle().Size.Width;
+                        loc.Y = shape.GetRectangle().Location.Y+shape.GetRectangle().Size.Height;
                         isSelected = true;
                     }
                     else if (!isSelected)
@@ -420,7 +657,6 @@ namespace shapesEditor
             if (isSelected)
             {
                 shapes.Remove(clickedShape);
-                //paintPanel.Invalidate();
             }
             if (clickedShape!=null)
             {
@@ -429,38 +665,38 @@ namespace shapesEditor
                 int sX = clickedShape.GetRectangle().Location.X;
                 int sY = clickedShape.GetRectangle().Location.Y;
 
-                //if (sHeight > sWidth)
-                //{
-                //    clickPoint.X = sX - sHeight;
-                //    clickPoint.Y = sY;
-                //}
-                //else
                 clickPoint = clickedShape.GetRectangle().Location;
-
 
                 movingPoint.X = sHeight;
                 movingPoint.Y = sWidth;
                 RotateRectangle();
 
-                //foreach (Shape shape in shapes) {
-                //    if (shape == clickedShape) {
-                //        shape.UpdateWidth(clickedShape.GetRectangle().Height);
-                //        shape.UpdateHeight(clickedShape.GetRectangle().Width);
-                //        //paintPanel.Invalidate();
-                //        RotateRectangle();
-                //        break;
-                //    }
-                //}
-
                 clickedShape = null;
-                //RotateRectangle();
+                
             }
         }
 
         private void pictureBox3_Click(object sender, EventArgs e)
         {
+            Shape currentShape=clickedShape;
+            bool isEntered = false;
             foreach (Shape shape in shapes)
             {
+                if (shape.GetName() == "Triangle")
+                {
+                    int x1 = shape.GetPoints()[0].X;
+                    int y1 = shape.GetPoints()[0].Y;
+                    int x2 = shape.GetPoints()[1].X;
+                    int y2 = shape.GetPoints()[1].Y;
+                    int x3 = shape.GetPoints()[2].X;
+                    int y3 = shape.GetPoints()[2].Y;
+                    if (clickPoint.X >= x1 && clickPoint.X <= x2 && clickPoint.Y <= x1 && clickPoint.Y >= y3)
+                    {
+
+                    }
+                    continue;
+                }
+
                 int x = shape.GetRectangle().Location.X;
                 int y = shape.GetRectangle().Location.Y;
                 int width = shape.GetRectangle().Size.Width;
@@ -468,12 +704,19 @@ namespace shapesEditor
 
                 if (clickPoint.X >= x && clickPoint.X <= x + width && clickPoint.Y >= y && clickPoint.Y <= y + height)
                 {
-                    clickedShape = shape;
+                    currentShape = shape;
+                    isEntered = true;
                 }
             }
-            shapes.Remove(clickedShape);
+            if(isEntered)
+                shapes.Remove(currentShape);
             clickedShape = null;
             paintPanel.Invalidate();
+        }
+
+        private void textBox3_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -62,8 +62,10 @@ namespace Shapes
             InitializeComponent();
         }
 
-        protected override CreateParams CreateParams {
-            get {
+        protected override CreateParams CreateParams
+        {
+            get
+            {
                 CreateParams handleParam = base.CreateParams;
                 handleParam.ExStyle |= 0x02000000;
                 return handleParam;
