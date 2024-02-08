@@ -128,6 +128,7 @@ namespace shapesEditor
 
             public override Rectangle GetRectangle()
             {
+                return new Rectangle(0,0,0,0);
                 throw new NotImplementedException();
             }
 
@@ -167,16 +168,6 @@ namespace shapesEditor
             InitializeComponent();
         }
 
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                CreateParams handleParam = base.CreateParams;
-                handleParam.ExStyle |= 0x02000000;
-                return handleParam;
-            }
-        }
-
         private string selectShape;
         private Point clickPoint;
         private Point movingPoint;
@@ -186,6 +177,7 @@ namespace shapesEditor
         private bool isSelected = false;
         private bool isModified=false;
         private bool isMoving=false;
+        private bool isRotate = false;
         private bool upLeft = false;
         private bool upRight = false;
         private bool downLeft = false;
@@ -210,10 +202,45 @@ namespace shapesEditor
         private void RotateRectangle()
         {
             isModified = true;
-            rectangle = new Rectangle();
-            Pen pen1=new Pen(Color.Black, 3);
-            rectangle.Location = clickPoint;
-            rectangle.Size = new Size(movingPoint);
+            isRotate = true;
+            //rectangle = new Rectangle();
+            //Pen pen1=new Pen(Color.Black, 3);
+            //rectangle.Location = clickPoint;
+            //rectangle.Size = new Size(movingPoint);
+            //if (selectShape != null) 
+
+            //{
+            //    switch (selectShape)
+            //    {
+            //        case "Rectangle":
+            //            foreach (Shape shape in shapes)
+            //            {
+            //                if (shape == clickedShape && shape is RectangleShape)
+            //                {
+            //                    RectangleShape rectangleShape = (RectangleShape)shape;
+            //                    rectangleShape.shape = rectangle;
+            //                    break;
+            //                }
+            //            }
+            //                break;
+            //        case "Circle":
+
+            //            break;
+            //        case "Triangle":
+
+            //            break;
+            //    }
+            //}
+            foreach (Shape shape in shapes) {
+                if (shape == clickedShape) {
+                    shape.UpdateHeight(movingPoint.Y);
+                    shape.UpdateWidth(movingPoint.X);
+                    clickedShape = shape;
+                    break;
+                }
+            }
+
+            //isModified = false;
             paintPanel.Invalidate();
         }
 
@@ -304,36 +331,37 @@ namespace shapesEditor
 
             pen = new Pen(Color.Black,3);
 
-            if (selectShape!=null && !isResize)
+            if ((selectShape!=null && !isResize && !isMoving && !isSelected )||isRotate)
             {
+                isRotate = false;
                 switch (selectShape)
                 {
                     case "Rectangle":
-                        if (isModified)
+                        if (!isModified)
                         {
-                            g.DrawRectangle(pen,rectangle);
-                            
+                            //g.DrawRectangle(pen,rectangle);
+                            DrawRectangle(pen);
+
                         }
-                        else
-                             DrawRectangle(pen);
+                            
                         break;
                     case "Circle":
-                        if (isModified)
-                        {
-                            g.DrawEllipse(pen, rectangle);
-
-                        }
-                        else
-                            DrawEllipse(pen);
-                        break;
-                    case "Triangle":
-                        if (isModified)
+                        if (!isModified)
                         {
                             //g.DrawEllipse(pen, rectangle);
+                            DrawEllipse(pen);
 
                         }
-                        else
+   
+                        break;
+                    case "Triangle":
+                        if (!isModified)
+                        {
+                            //g.DrawPolygon(pen, points);
                             DrawTriangle(pen);
+
+                        }
+                            
                         break;
                 }
             }
@@ -366,7 +394,7 @@ namespace shapesEditor
                 paintPanel.Invalidate();
             }
             clickPoint = e.Location;
-            if (clickedShape != null)
+            if (clickedShape != null && clickedShape.GetName()!="Triangle")
             {
                 offsetX = e.Location.X - clickedShape.GetRectangle().Location.X;
                 offsetY = e.Location.Y - clickedShape.GetRectangle().Location.Y;
@@ -393,7 +421,11 @@ namespace shapesEditor
             //textBox3.Text = "" + paintPanel.PointToClient(paintPanel.PointToScreen(e.Location));
             //isResize = false;
 
-            if (e.Button == MouseButtons.Left && !isSelected)
+            //if (clickedShape!=null && clickedShape.GetName()!="Triangle") {
+            //    return;
+            //}
+
+            if (e.Button == MouseButtons.Left && !isSelected && !isMoving)
             {
                 isDragging = true;
                 movingPoint = e.Location;
@@ -576,13 +608,14 @@ namespace shapesEditor
 
         private void paintPanel_MouseUp(object sender, MouseEventArgs e)
         {
+            isModified = false;
             if (e.Button == MouseButtons.Left && (clickPoint.X - movingPoint.X != 0 && clickPoint.Y - movingPoint.Y != 0 || isModified))
             {
                 switch (selectShape)
                 {
                     case "Rectangle":
                         shapes.Add(new RectangleShape(rectangle));
-                        isModified = false;
+
                         break;
                     case "Circle":
                         shapes.Add(new EllipseShape(rectangle));
@@ -608,7 +641,6 @@ namespace shapesEditor
             left = false;
             right = false;
             down = false;
-            isMoving = false;
             loc = new Point(0,0);
 
             if (clickPoint.X - movingPoint.X == 0 && clickPoint.Y - movingPoint.Y == 0 && shapes.Count > 0)
@@ -619,7 +651,32 @@ namespace shapesEditor
                 {
 
                     if (shape.GetName() == "Triangle")
+                    {
+
+                        int x1 = shape.GetPoints()[0].X;
+                        int y1 = shape.GetPoints()[0].Y;
+                        int x2 = shape.GetPoints()[1].X;
+                        int y2 = shape.GetPoints()[1].Y;
+                        int x3 = shape.GetPoints()[2].X;
+                        int y3 = shape.GetPoints()[2].Y;
+
+                        if (clickPoint.X <= x1 && clickPoint.X >= x2 && clickPoint.Y >= y3 && clickPoint.Y <= y1)
+                        {
+                            clickedShape = shape;
+                            paintPanel.Invalidate();
+                            selectShape = shape.GetName();
+                            //loc.X = shape.GetRectangle().Location.X + shape.GetRectangle().Size.Width;
+                            //loc.Y = shape.GetRectangle().Location.Y + shape.GetRectangle().Size.Height;
+                            isSelected = true;
+                        }
+                        else if (!isSelected)
+                        {
+                            isSelected = false;
+                            clickedShape = null;
+                        }
+
                         continue;
+                    }
 
                     int x = shape.GetRectangle().Location.X;
                     int y = shape.GetRectangle().Location.Y;
@@ -649,15 +706,16 @@ namespace shapesEditor
                 isSelected = false;
             }
 
+            //isMoving = false;
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
 
-            if (isSelected)
-            {
-                shapes.Remove(clickedShape);
-            }
+            //if (isSelected)
+            //{
+            //    shapes.Remove(clickedShape);
+            //}
             if (clickedShape!=null)
             {
                 int sHeight = clickedShape.GetRectangle().Height;
@@ -671,7 +729,7 @@ namespace shapesEditor
                 movingPoint.Y = sWidth;
                 RotateRectangle();
 
-                clickedShape = null;
+                //clickedShape = null;
                 
             }
         }
@@ -690,9 +748,10 @@ namespace shapesEditor
                     int y2 = shape.GetPoints()[1].Y;
                     int x3 = shape.GetPoints()[2].X;
                     int y3 = shape.GetPoints()[2].Y;
-                    if (clickPoint.X >= x1 && clickPoint.X <= x2 && clickPoint.Y <= x1 && clickPoint.Y >= y3)
+                    if (clickPoint.X <= x1 && clickPoint.X >= x2 && clickPoint.Y >= y3 && clickPoint.Y <= y1)
                     {
-
+                        currentShape = shape;
+                        isEntered = true;
                     }
                     continue;
                 }

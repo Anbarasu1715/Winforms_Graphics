@@ -36,7 +36,7 @@
             this.logoTransUC1.GetDirection = LucidLogo.LogoTransUC.Direction.ClockWise;
             this.logoTransUC1.Location = new System.Drawing.Point(84, 85);
             this.logoTransUC1.Name = "logoTransUC1";
-            this.logoTransUC1.Size = new System.Drawing.Size(1044, 267);
+            this.logoTransUC1.Size = new System.Drawing.Size(340, 267);
             this.logoTransUC1.TabIndex = 0;
             // 
             // Form1
