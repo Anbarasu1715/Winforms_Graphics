@@ -203,34 +203,7 @@ namespace shapesEditor
         {
             isModified = true;
             isRotate = true;
-            //rectangle = new Rectangle();
-            //Pen pen1=new Pen(Color.Black, 3);
-            //rectangle.Location = clickPoint;
-            //rectangle.Size = new Size(movingPoint);
-            //if (selectShape != null) 
-
-            //{
-            //    switch (selectShape)
-            //    {
-            //        case "Rectangle":
-            //            foreach (Shape shape in shapes)
-            //            {
-            //                if (shape == clickedShape && shape is RectangleShape)
-            //                {
-            //                    RectangleShape rectangleShape = (RectangleShape)shape;
-            //                    rectangleShape.shape = rectangle;
-            //                    break;
-            //                }
-            //            }
-            //                break;
-            //        case "Circle":
-
-            //            break;
-            //        case "Triangle":
-
-            //            break;
-            //    }
-            //}
+            
             foreach (Shape shape in shapes) {
                 if (shape == clickedShape) {
                     shape.UpdateHeight(movingPoint.Y);
@@ -242,6 +215,11 @@ namespace shapesEditor
 
             //isModified = false;
             paintPanel.Invalidate();
+        }
+
+        private void RotateTriangle() {
+            isModified = true;
+            isRotate = true;
         }
 
         private void DrawRectangle(Pen pen)
