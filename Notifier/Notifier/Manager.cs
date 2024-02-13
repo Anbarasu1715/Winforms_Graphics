@@ -10,20 +10,26 @@ namespace Notifier
 {
     class Manager:Component
     {
+
+        public enum Position {
+            Left,
+            Right
+        }
+
+        public Position GetPosition { get; set; }
+        public int CornerRadius { get; set; }
+
         public string Msg { get; set; }
         public Point Location { get; set; }
         public DateTime TimeStamp { get; set; }
 
-        public List<Manager> Datas = new List<Manager>();
+        public Manager(string s) {
+            Msg = s;
+            TimeStamp = DateTime.Now;
+        }
 
-        public void AddData(string msg, Point loc) {
-            var Data = new Manager() {
-                Msg = msg,
-                Location = loc,
-                TimeStamp = DateTime.Now
-            };
+        public Manager() {
 
-            Datas.Add(Data);
         }
     }
 }
