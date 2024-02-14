@@ -13,6 +13,9 @@ namespace Notifier
             InitializeComponent();
             this.TransparencyKey = Color.Magenta;
             this.BackColor = Color.Magenta;
+            OpacityTimer = new Timer();
+            OpacityTimer.Interval = 50;
+            OpacityTimer.Tick += ReduceOpacity;
         }
 
         public Notification(int radius)
@@ -27,7 +30,9 @@ namespace Notifier
         private Graphics graphics;
         private int Cornerradius;
         public EventHandler<EventArgs> OnExit;
-        
+        public EventHandler<EventArgs> OnDisplay;
+        private MsgBox obj;
+
         [Browsable(true)]
         [Category("Layout")]
         [Description("Specifies the display position of the notification.")]
@@ -44,9 +49,20 @@ namespace Notifier
         }
 
         public void SetText(string text) {
-            if (text.Length > 25)
-                label1.Height = 100;
             label1.Text = text;
+        }
+
+        public int labelWidth() {
+            return label1.Width;
+        }
+
+        public Font labelFont() {
+            return label1.Font;
+        }
+
+        public void SetHeight(int h,int Width) {
+            label1.Height = (h)*label1.Height;
+            this.Height += label1.Height-30;
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -55,11 +71,7 @@ namespace Notifier
 
             GraphicsPath path = new GraphicsPath();
 
-            //Rectangle leftRec = new Rectangle(0, 0, Height, Height);
-            //Rectangle rightRec = new Rectangle(Width - Height, 0, Height, Height);
-
-            //path.AddArc(leftRec, 90, 180);
-            //path.AddArc(rightRec, 270, 180);
+           
             AddRoundRect(path,0,0,Width,Height, 20);
 
             Brush brush = new SolidBrush(Color.DarkGray);
@@ -91,6 +103,35 @@ namespace Notifier
         {
             OnExit?.Invoke(this,e);
             this.Close();
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+            OnDisplay?.Invoke(this, e);
+            this.Close();
+        }
+
+        private double OpacityIncrement = 0.1;
+        private double TargetOpacity = 0.01;
+        private Timer OpacityTimer;
+
+        private void ReduceOpacity(object sender, EventArgs e)
+        {
+            if (this.Opacity > TargetOpacity)
+            {
+                this.Opacity -= OpacityIncrement;
+            }
+            else
+            {
+                OpacityTimer.Stop();
+                this.Close();
+            }
+        }
+
+        private void Notification_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = true;
+            OpacityTimer.Start();
         }
     }
 }

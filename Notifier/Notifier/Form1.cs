@@ -22,9 +22,51 @@ namespace Notifier
 
         private Timer timer;
         private String Position;
+        private MsgBox MBox;
+        private Rectangle screen;
+        private int timeInterval = 10;
         private Dictionary<Notification, Manager> ExtraNotifications = new Dictionary<Notification, Manager>();
         private Dictionary<Notification, Manager> notifications = new Dictionary<Notification, Manager>();
 
+
+        //private void CheckNotifications() {
+
+        //    int X;
+        //    if (Position == "Right")
+        //        X = 0;
+        //    else
+        //        X = 1545;
+
+        //    List<Notification> notificationsToRemove = new List<Notification>();
+        //    List<Notification> ExtraNotificationsToRemove = new List<Notification>();
+
+        //    Point firstLoc = new Point(X, screen.Height - notifications.Keys.First().Height - 40);
+
+        //    foreach (KeyValuePair<Notification, Manager> kvp in notifications)
+        //    {
+        //        DateTime currentTime = DateTime.Now;
+        //        TimeSpan timeGap = currentTime - kvp.Value.TimeStamp;
+
+        //        if (timeGap.TotalSeconds >= timeInterval)
+        //        {
+        //            notificationsToRemove.Add(kvp.Key);
+        //        }
+        //        else
+        //        {
+        //            kvp.Key.Location = firstLoc;
+        //            kvp.Value.Location = firstLoc;
+        //            firstLoc.Y -= (kvp.Key.Height + 5);
+        //        }
+        //    }
+
+        //    foreach (var notificationToRemove in notificationsToRemove)
+        //    {
+        //        notificationToRemove.Close();
+        //        notifications.Remove(notificationToRemove);
+        //    }
+
+
+        //}
 
         private void CheckNotifications(object sender, EventArgs e)
         {
@@ -32,7 +74,7 @@ namespace Notifier
             if (Position == "Right")
                 X = 0;
             else
-                X = 1545;
+              X = 1545;
 
             Point firstLoc = new Point(X, 930);
 
@@ -86,19 +128,50 @@ namespace Notifier
             notifications.Remove((sender as Notification));
             CheckNotifications(sender, e);
         }
-        
 
         
-        int c = 0;
+
         public void GenerateNotification(object sender,EventArgs e) {
+
+            MBox?.Dispose();
+
+            //Graphics
+            Graphics g = CreateGraphics();
+            screen = (Screen.PrimaryScreen.Bounds);
             Notification notification = new Notification();
-
-            //string Text = (sender as Button).Text;
+            
+            int lineCount = 0;
             string Text =textBox1.Text;
-            Manager Data = new Manager(Text);
-            Position=manager1.GetPosition +"";
+            string finalText = Text;
 
-            Rectangle screen = (Screen.PrimaryScreen.Bounds);
+            SizeF textSize = g.MeasureString(Text, notification.labelFont());
+
+            if (textSize.Width>notification.labelWidth()) {
+                finalText = "";
+                string line = "";
+                string[] words = Text.Split(' ');
+
+                foreach (string word in words) {
+                    if (g.MeasureString(line+word,notification.labelFont()).Width>notification.labelWidth() && g.MeasureString(word, notification.labelFont()).Width < notification.labelWidth()) {
+                        finalText += line.Trim() + Environment.NewLine;
+                        line = word+" ";
+                        lineCount++;
+                    }
+                    else
+                    {
+                        line +=word+" ";
+                    }
+                }
+                finalText += line.Trim();
+                lineCount++;
+            }
+
+            //Set the Height of the Notification Form
+            notification.SetHeight(lineCount,this.Width);
+
+            Manager Data = new Manager(finalText);
+
+            Position =manager1.GetPosition +"";
 
             int Y = screen.Height- notification.Height-40;
             int X;
@@ -108,17 +181,23 @@ namespace Notifier
             }
             else
                 X = screen.Width-notification.Width - 10;
-            int length = notifications.Count;
 
-            Y -= (length * (notification.Height + 5));
+
+            int NotificationsCount = notifications.Count;
+
+            if (NotificationsCount >= 1) {
+                Y = notifications[notifications.Keys.Last()].Location.Y - notification.Height;
+            }
+
             notification.Location = new Point(X,Y);
             notification.OnExit += removeClosedNotification;
+            notification.OnDisplay += DisplayNotification;
             Data.Location = notification.Location;
+            Data.Msg = finalText;
 
-            //notification.SetText((sender as Button).Text);
-            notification.SetText(Text);
+            notification.SetText(finalText);
 
-            if (notifications.Count >= 9)
+            if (NotificationsCount>0 &&notifications[notifications.Keys.Last()].Location.Y - notification.Height<=0)
             {
                 ExtraNotifications.Add(notification, Data);
             }
@@ -129,8 +208,28 @@ namespace Notifier
             }
             
             timer.Start();
-            c++;
         }
 
+        private void DisplayNotification(object sender, EventArgs e)
+        {
+            MBox?.Dispose();
+            Notification ObjToRemove=null;
+            foreach (var kvp in notifications) {
+                if ((kvp.Key as Notification) == (sender as Notification)) {
+                    ObjToRemove = kvp.Key;
+                    string text = kvp.Value.Msg;
+                    MBox = new MsgBox();
+                    MBox.SetText(text);
+                    MBox.Show();
+                }
+            }
+            if (ObjToRemove != null)
+                notifications.Remove(ObjToRemove);
+        }
+
+        private void Form1_Click(object sender, EventArgs e)
+        {
+            MBox?.Dispose();
+        }
     }
 }

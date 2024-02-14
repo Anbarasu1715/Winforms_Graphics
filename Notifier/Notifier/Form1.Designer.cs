@@ -36,11 +36,11 @@
             this.page2Btn2 = new System.Windows.Forms.Button();
             this.page1Btn1 = new System.Windows.Forms.Button();
             this.Page2 = new System.Windows.Forms.TabPage();
-            this.Page3 = new System.Windows.Forms.TabPage();
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
+            this.Page3 = new System.Windows.Forms.TabPage();
             this.button7 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
             this.button9 = new System.Windows.Forms.Button();
@@ -78,6 +78,7 @@
             this.Page1.TabIndex = 0;
             this.Page1.Text = "Page1";
             this.Page1.UseVisualStyleBackColor = true;
+            this.Page1.Click += new System.EventHandler(this.Form1_Click);
             // 
             // button1
             // 
@@ -145,20 +146,6 @@
             this.Page2.Text = "Page2";
             this.Page2.UseVisualStyleBackColor = true;
             // 
-            // Page3
-            // 
-            this.Page3.Controls.Add(this.button7);
-            this.Page3.Controls.Add(this.button8);
-            this.Page3.Controls.Add(this.button9);
-            this.Page3.Controls.Add(this.button10);
-            this.Page3.Location = new System.Drawing.Point(4, 22);
-            this.Page3.Name = "Page3";
-            this.Page3.Padding = new System.Windows.Forms.Padding(3);
-            this.Page3.Size = new System.Drawing.Size(792, 424);
-            this.Page3.TabIndex = 2;
-            this.Page3.Text = "Page3";
-            this.Page3.UseVisualStyleBackColor = true;
-            // 
             // button3
             // 
             this.button3.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -202,6 +189,20 @@
             this.button6.Text = "Alert";
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.GenerateNotification);
+            // 
+            // Page3
+            // 
+            this.Page3.Controls.Add(this.button7);
+            this.Page3.Controls.Add(this.button8);
+            this.Page3.Controls.Add(this.button9);
+            this.Page3.Controls.Add(this.button10);
+            this.Page3.Location = new System.Drawing.Point(4, 22);
+            this.Page3.Name = "Page3";
+            this.Page3.Padding = new System.Windows.Forms.Padding(3);
+            this.Page3.Size = new System.Drawing.Size(792, 424);
+            this.Page3.TabIndex = 2;
+            this.Page3.Text = "Page3";
+            this.Page3.UseVisualStyleBackColor = true;
             // 
             // button7
             // 
@@ -263,6 +264,7 @@
             this.Controls.Add(this.tabControl);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Click += new System.EventHandler(this.Form1_Click);
             this.tabControl.ResumeLayout(false);
             this.Page1.ResumeLayout(false);
             this.Page1.PerformLayout();
