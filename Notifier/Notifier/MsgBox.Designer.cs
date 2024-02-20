@@ -53,7 +53,6 @@
             this.Name = "MsgBox";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MsgBox";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MsgBox_FormClosing);
             this.Load += new System.EventHandler(this.MsgBox_Load);
             this.Click += new System.EventHandler(this.MsgBox_Click);
             this.ResumeLayout(false);

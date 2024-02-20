@@ -82,7 +82,6 @@
             this.Name = "Notification";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Nofication";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Notification_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxExit)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

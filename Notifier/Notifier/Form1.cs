@@ -25,46 +25,115 @@ namespace Notifier
         private MsgBox MBox;
         private Rectangle screen;
         private int timeInterval = 10;
-        private Dictionary<Notification, Manager> ExtraNotifications = new Dictionary<Notification, Manager>();
-        private Dictionary<Notification, Manager> notifications = new Dictionary<Notification, Manager>();
+        private OrderedDictionary<Notification, Manager> ExtraNotifications = new OrderedDictionary<Notification, Manager>();
+        private OrderedDictionary<Notification, Manager> notifications = new OrderedDictionary<Notification, Manager>();
 
+        //private List<KeyValuePair<Notification, Manager>> ExtraNotifications = new List<KeyValuePair<Notification, Manager>>();
+        //private List<KeyValuePair<Notification, Manager>> notifications = new List<KeyValuePair<Notification, Manager>>();
 
-        //private void CheckNotifications() {
+        private List<Notification> notificationsToRemove = new List<Notification>();
+        private List<Notification> ExtraNotificationsToRemove = new List<Notification>();
 
+        //private void check() {
         //    int X;
         //    if (Position == "Right")
         //        X = 0;
         //    else
         //        X = 1545;
 
-        //    List<Notification> notificationsToRemove = new List<Notification>();
-        //    List<Notification> ExtraNotificationsToRemove = new List<Notification>();
 
-        //    Point firstLoc = new Point(X, screen.Height - notifications.Keys.First().Height - 40);
 
-        //    foreach (KeyValuePair<Notification, Manager> kvp in notifications)
+        //    if (notifications.Count() > 0)
         //    {
-        //        DateTime currentTime = DateTime.Now;
-        //        TimeSpan timeGap = currentTime - kvp.Value.TimeStamp;
+        //        Point firstLoc = new Point(X, screen.Height - 35);
 
-        //        if (timeGap.TotalSeconds >= timeInterval)
+        //        foreach (KeyValuePair<Notification, Manager> kvp in notifications.Items)
         //        {
-        //            notificationsToRemove.Add(kvp.Key);
-        //        }
-        //        else
-        //        {
-        //            kvp.Key.Location = firstLoc;
-        //            kvp.Value.Location = firstLoc;
-        //            firstLoc.Y -= (kvp.Key.Height + 5);
+        //            DateTime currentTime = DateTime.Now;
+        //            TimeSpan timeGap = currentTime - kvp.Value.TimeStamp;
+
+        //            if (timeGap.TotalSeconds >= timeInterval)
+        //            {
+        //                notificationsToRemove.Add(kvp.Key);
+        //            }
+        //            else
+        //            {
+        //                firstLoc.Y -= (kvp.Key.Height + 5);
+        //                kvp.Key.Location = firstLoc;
+        //                kvp.Value.Location = firstLoc;
+        //            }
         //        }
         //    }
+        //}
+
+        //private void CheckNotifications(object sender, EventArgs e)
+        //{
+        //    //int X;
+        //    //if (Position == "Right")
+        //    //    X = 0;
+        //    //else
+        //    //    X = 1545;
+
+
+
+        //    //if (notifications.Count > 0)
+        //    //{
+        //    //    Point firstLoc = new Point(X, screen.Height - 35);
+
+        //    //    foreach (KeyValuePair<Notification, Manager> kvp in notifications)
+        //    //    {
+        //    //        DateTime currentTime = DateTime.Now;
+        //    //        TimeSpan timeGap = currentTime - kvp.Value.TimeStamp;
+
+        //    //        if (timeGap.TotalSeconds >= timeInterval)
+        //    //        {
+        //    //            notificationsToRemove.Add(kvp.Key);
+        //    //        }
+        //    //        else
+        //    //        {
+        //    //            firstLoc.Y -= (kvp.Key.Height + 5);
+        //    //            kvp.Key.Location = firstLoc;
+        //    //            kvp.Value.Location = firstLoc;
+        //    //        }
+        //    //    }
+        //    //}
+        //    check();
+
+        //    int Y = 0;
 
         //    foreach (var notificationToRemove in notificationsToRemove)
         //    {
+        //        //Y = notifications[notificationToRemove].Location.Y;
         //        notificationToRemove.Close();
         //        notifications.Remove(notificationToRemove);
         //    }
 
+        //    notificationsToRemove.Clear();
+
+        //    check();
+
+        //    if (notifications.Count() > 0)
+        //        Y = notifications.Keys.Last().Location.Y;
+
+        //    if (ExtraNotifications.Count()>0 && Y-ExtraNotifications.Keys.First().Height-35 >= 0)
+        //    {
+        //        for (int i = 0; i < ExtraNotifications.Count(); i++)
+        //        {
+        //            if (notifications.Keys.Last().Location.Y - ExtraNotifications.Keys.First().Height - 35 >= 0)
+        //            {
+        //                notifications.Add(ExtraNotifications.Keys.First(), ExtraNotifications[ExtraNotifications.Keys.First()]);
+        //                notifications.Keys.First().Show();
+        //                notifications[notifications.Keys.Last()].TimeStamp = DateTime.Now;
+        //                ExtraNotifications.Remove(ExtraNotifications.Keys.First());
+        //                check();
+        //                i--;
+        //            }
+        //            else
+        //            {
+        //                break;
+        //            }
+        //        }
+        //    }
 
         //}
 
@@ -74,7 +143,7 @@ namespace Notifier
             if (Position == "Right")
                 X = 0;
             else
-              X = 1545;
+                X = 1545;
 
             Point firstLoc = new Point(X, 930);
 
@@ -124,14 +193,16 @@ namespace Notifier
         }
 
 
-        private void removeClosedNotification(Object sender,EventArgs e) {
+        private void removeClosedNotification(Object sender,EventArgs e)
+        {
             notifications.Remove((sender as Notification));
             CheckNotifications(sender, e);
         }
 
         
 
-        public void GenerateNotification(object sender,EventArgs e) {
+        public void GenerateNotification(object sender,EventArgs e)
+        {
 
             MBox?.Dispose();
 
@@ -146,13 +217,22 @@ namespace Notifier
 
             SizeF textSize = g.MeasureString(Text, notification.labelFont());
 
-            if (textSize.Width>notification.labelWidth()) {
+            if (textSize.Width>notification.labelWidth())
+            {
                 finalText = "";
                 string line = "";
                 string[] words = Text.Split(' ');
 
-                foreach (string word in words) {
-                    if (g.MeasureString(line+word,notification.labelFont()).Width>notification.labelWidth() && g.MeasureString(word, notification.labelFont()).Width < notification.labelWidth()) {
+                foreach (string word in words)
+                {
+                    if (g.MeasureString(word, notification.labelFont()).Width > notification.labelWidth())
+                    {
+                        finalText += word.Trim() + Environment.NewLine;
+                        line = "";
+                        lineCount++;
+                    }
+                    else if (g.MeasureString(line+word,notification.labelFont()).Width>notification.labelWidth() )
+                    {
                         finalText += line.Trim() + Environment.NewLine;
                         line = word+" ";
                         lineCount++;
@@ -173,20 +253,22 @@ namespace Notifier
 
             Position =manager1.GetPosition +"";
 
-            int Y = screen.Height- notification.Height-40;
+            int Y = screen.Height - notification.Height-40;
             int X;
 
-            if (Position=="Right") {
+            if (Position=="Right")
+            {
                 X = 0;
             }
             else
                 X = screen.Width-notification.Width - 10;
 
 
-            int NotificationsCount = notifications.Count;
+            int NotificationsCount = notifications.Count();
 
-            if (NotificationsCount >= 1) {
-                Y = notifications[notifications.Keys.Last()].Location.Y - notification.Height;
+            if (NotificationsCount >= 1)
+            {
+                Y = notifications[notifications.Keys.Last()].Location.Y - notification.Height-5;
             }
 
             notification.Location = new Point(X,Y);
@@ -197,11 +279,11 @@ namespace Notifier
 
             notification.SetText(finalText);
 
-            if (NotificationsCount>0 &&notifications[notifications.Keys.Last()].Location.Y - notification.Height<=0)
+            if (NotificationsCount>0 && notifications[notifications.Keys.Last()].Location.Y - notification.Height<=0)
             {
                 ExtraNotifications.Add(notification, Data);
             }
-            else if (ExtraNotifications.Count == 0)
+            else if (ExtraNotifications.Count() == 0)
             {
                 notifications.Add(notification, Data);
                 notification.Show();
@@ -214,8 +296,10 @@ namespace Notifier
         {
             MBox?.Dispose();
             Notification ObjToRemove=null;
-            foreach (var kvp in notifications) {
-                if ((kvp.Key as Notification) == (sender as Notification)) {
+            foreach (var kvp in notifications.Items)
+            {
+                if ((kvp.Key as Notification) == (sender as Notification))
+                {
                     ObjToRemove = kvp.Key;
                     string text = kvp.Value.Msg;
                     MBox = new MsgBox();

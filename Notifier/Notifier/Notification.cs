@@ -23,19 +23,16 @@ namespace Notifier
             InitializeComponent();
             this.TransparencyKey = Color.Magenta;
             this.BackColor = Color.Magenta;
-            Cornerradius = radius; 
+            CornerRadius = radius; 
         }
 
 
         private Graphics graphics;
-        private int Cornerradius;
+        private int CornerRadius;
         public EventHandler<EventArgs> OnExit;
         public EventHandler<EventArgs> OnDisplay;
         private MsgBox obj;
 
-        [Browsable(true)]
-        [Category("Layout")]
-        [Description("Specifies the display position of the notification.")]
         public Position DisplayPosition
         {
             get;
