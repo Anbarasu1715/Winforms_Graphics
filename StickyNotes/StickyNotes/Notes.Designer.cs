@@ -35,8 +35,6 @@
             this.EditorPanel = new System.Windows.Forms.Panel();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.Color6 = new System.Windows.Forms.Label();
             this.Color4 = new System.Windows.Forms.Label();
             this.Color3 = new System.Windows.Forms.Label();
@@ -51,10 +49,10 @@
             this.Underline_PB = new System.Windows.Forms.PictureBox();
             this.Italic_PB = new System.Windows.Forms.PictureBox();
             this.Bold_PB = new System.Windows.Forms.PictureBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.HomePanel.SuspendLayout();
             this.EditorPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.Option_Panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Image_PB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Points_pB)).BeginInit();
@@ -62,6 +60,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.Underline_PB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Italic_PB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Bold_PB)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // HomePanel
@@ -86,6 +86,7 @@
             this.label2.TabIndex = 7;
             this.label2.Text = "+";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label2.Click += new System.EventHandler(this.label2_Click);
             this.label2.MouseEnter += new System.EventHandler(this.label2_MouseEnter);
             this.label2.MouseLeave += new System.EventHandler(this.label2_MouseLeave);
             // 
@@ -146,6 +147,7 @@
             this.label5.TabIndex = 12;
             this.label5.Text = "Delete Note";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label5.Click += new System.EventHandler(this.label5_Click);
             this.label5.MouseEnter += new System.EventHandler(this.pictureBox2_MouseEnter);
             this.label5.MouseLeave += new System.EventHandler(this.pictureBox2_MouseLeave);
             // 
@@ -160,32 +162,9 @@
             this.label4.TabIndex = 11;
             this.label4.Text = "Notes List";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label4.Click += new System.EventHandler(this.label4_Click);
             this.label4.MouseEnter += new System.EventHandler(this.pictureBox1_MouseEnter);
             this.label4.MouseLeave += new System.EventHandler(this.label4_MouseLeave);
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.Image = global::StickyNotes.Images.delete;
-            this.pictureBox2.Location = new System.Drawing.Point(0, 105);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(42, 45);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.pictureBox2.TabIndex = 10;
-            this.pictureBox2.TabStop = false;
-            this.pictureBox2.MouseEnter += new System.EventHandler(this.pictureBox2_MouseEnter);
-            this.pictureBox2.MouseLeave += new System.EventHandler(this.pictureBox2_MouseLeave);
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = global::StickyNotes.Images.notesList;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 61);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(42, 45);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.pictureBox1.TabIndex = 9;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.MouseEnter += new System.EventHandler(this.pictureBox1_MouseEnter);
-            this.pictureBox1.MouseLeave += new System.EventHandler(this.label4_MouseLeave);
             // 
             // Color6
             // 
@@ -364,6 +343,32 @@
             this.Bold_PB.MouseEnter += new System.EventHandler(this.Image_PB_MouseEnter);
             this.Bold_PB.MouseLeave += new System.EventHandler(this.Image_PB_MouseLeave);
             // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Image = global::StickyNotes.Images.delete;
+            this.pictureBox2.Location = new System.Drawing.Point(0, 105);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(42, 45);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pictureBox2.TabIndex = 10;
+            this.pictureBox2.TabStop = false;
+            this.pictureBox2.Click += new System.EventHandler(this.label5_Click);
+            this.pictureBox2.MouseEnter += new System.EventHandler(this.pictureBox2_MouseEnter);
+            this.pictureBox2.MouseLeave += new System.EventHandler(this.pictureBox2_MouseLeave);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::StickyNotes.Images.notesList;
+            this.pictureBox1.Location = new System.Drawing.Point(0, 61);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(42, 45);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pictureBox1.TabIndex = 9;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.label4_Click);
+            this.pictureBox1.MouseEnter += new System.EventHandler(this.pictureBox1_MouseEnter);
+            this.pictureBox1.MouseLeave += new System.EventHandler(this.label4_MouseLeave);
+            // 
             // Notes
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -381,8 +386,6 @@
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Notes_Paint);
             this.HomePanel.ResumeLayout(false);
             this.EditorPanel.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.Option_Panel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.Image_PB)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Points_pB)).EndInit();
@@ -390,6 +393,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.Underline_PB)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Italic_PB)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Bold_PB)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }

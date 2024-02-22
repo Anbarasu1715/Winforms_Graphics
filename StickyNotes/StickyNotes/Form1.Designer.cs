@@ -29,13 +29,14 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.Add_Lbl = new System.Windows.Forms.Label();
+            this.Exit_Lbl = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.Exit_Lbl = new System.Windows.Forms.Label();
-            this.Add_Lbl = new System.Windows.Forms.Label();
-            this.Settings_PB = new System.Windows.Forms.PictureBox();
             this.searchBar = new StickyNotes.SearchBar();
+            this.displayNote1 = new StickyNotes.DisplayNote();
+            this.Settings_PB = new System.Windows.Forms.PictureBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -52,6 +53,34 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(320, 37);
             this.panel1.TabIndex = 0;
+            // 
+            // Add_Lbl
+            // 
+            this.Add_Lbl.Dock = System.Windows.Forms.DockStyle.Left;
+            this.Add_Lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Add_Lbl.Location = new System.Drawing.Point(0, 0);
+            this.Add_Lbl.Name = "Add_Lbl";
+            this.Add_Lbl.Size = new System.Drawing.Size(41, 37);
+            this.Add_Lbl.TabIndex = 4;
+            this.Add_Lbl.Text = "+";
+            this.Add_Lbl.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.Add_Lbl.Click += new System.EventHandler(this.Add_Lbl_Click);
+            this.Add_Lbl.MouseEnter += new System.EventHandler(this.Add_Lbl_MouseEnter);
+            this.Add_Lbl.MouseLeave += new System.EventHandler(this.Add_Lbl_MouseLeave);
+            // 
+            // Exit_Lbl
+            // 
+            this.Exit_Lbl.Dock = System.Windows.Forms.DockStyle.Right;
+            this.Exit_Lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Exit_Lbl.Location = new System.Drawing.Point(279, 0);
+            this.Exit_Lbl.Name = "Exit_Lbl";
+            this.Exit_Lbl.Size = new System.Drawing.Size(41, 37);
+            this.Exit_Lbl.TabIndex = 3;
+            this.Exit_Lbl.Text = "X";
+            this.Exit_Lbl.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.Exit_Lbl.Click += new System.EventHandler(this.Exit_Lbl_Click);
+            this.Exit_Lbl.MouseEnter += new System.EventHandler(this.Exit_Lbl_MouseEnter);
+            this.Exit_Lbl.MouseLeave += new System.EventHandler(this.Exit_Lbl_MouseLeave);
             // 
             // panel2
             // 
@@ -76,6 +105,7 @@
             // 
             // panel3
             // 
+            this.panel3.AutoScroll = true;
             this.panel3.Controls.Add(this.searchBar);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel3.Location = new System.Drawing.Point(0, 74);
@@ -83,56 +113,37 @@
             this.panel3.Size = new System.Drawing.Size(320, 546);
             this.panel3.TabIndex = 2;
             // 
-            // Exit_Lbl
+            // searchBar
             // 
-            this.Exit_Lbl.Dock = System.Windows.Forms.DockStyle.Right;
-            this.Exit_Lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Exit_Lbl.Location = new System.Drawing.Point(279, 0);
-            this.Exit_Lbl.Name = "Exit_Lbl";
-            this.Exit_Lbl.Size = new System.Drawing.Size(41, 37);
-            this.Exit_Lbl.TabIndex = 3;
-            this.Exit_Lbl.Text = "X";
-            this.Exit_Lbl.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.Exit_Lbl.Click += new System.EventHandler(this.Exit_Lbl_Click);
-            this.Exit_Lbl.MouseEnter += new System.EventHandler(this.Exit_Lbl_MouseEnter);
-            this.Exit_Lbl.MouseLeave += new System.EventHandler(this.Exit_Lbl_MouseLeave);
+            this.searchBar.AutoScroll = true;
+            this.searchBar.AutoScrollMinSize = new System.Drawing.Size(10, 20);
+            this.searchBar.Dock = System.Windows.Forms.DockStyle.Top;
+            this.searchBar.Location = new System.Drawing.Point(0, 0);
+            this.searchBar.Name = "searchBar";
+            this.searchBar.Padding = new System.Windows.Forms.Padding(5, 0, 20, 0);
+            this.searchBar.Size = new System.Drawing.Size(320, 32);
+            this.searchBar.TabIndex = 0;
             // 
-            // Add_Lbl
+            // displayNote1
             // 
-            this.Add_Lbl.Dock = System.Windows.Forms.DockStyle.Left;
-            this.Add_Lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Add_Lbl.Location = new System.Drawing.Point(0, 0);
-            this.Add_Lbl.Name = "Add_Lbl";
-            this.Add_Lbl.Size = new System.Drawing.Size(41, 37);
-            this.Add_Lbl.TabIndex = 4;
-            this.Add_Lbl.Text = "+";
-            this.Add_Lbl.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.Add_Lbl.Click += new System.EventHandler(this.Add_Lbl_Click);
-            this.Add_Lbl.MouseEnter += new System.EventHandler(this.Add_Lbl_MouseEnter);
-            this.Add_Lbl.MouseLeave += new System.EventHandler(this.Add_Lbl_MouseLeave);
+            this.displayNote1.Location = new System.Drawing.Point(13, 186);
+            this.displayNote1.Name = "displayNote1";
+            this.displayNote1.Size = new System.Drawing.Size(295, 55);
+            this.displayNote1.TabIndex = 1;
             // 
             // Settings_PB
             // 
             this.Settings_PB.Dock = System.Windows.Forms.DockStyle.Right;
-            this.Settings_PB.Image = global::StickyNotes.Images.settings;
-            this.Settings_PB.Location = new System.Drawing.Point(235, 0);
+            this.Settings_PB.Image = global::StickyNotes.Images.settings1;
+            this.Settings_PB.Location = new System.Drawing.Point(247, 0);
             this.Settings_PB.Name = "Settings_PB";
-            this.Settings_PB.Size = new System.Drawing.Size(44, 37);
+            this.Settings_PB.Size = new System.Drawing.Size(32, 37);
             this.Settings_PB.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.Settings_PB.TabIndex = 1;
             this.Settings_PB.TabStop = false;
             this.Settings_PB.Click += new System.EventHandler(this.Settings_PB_Click);
             this.Settings_PB.MouseEnter += new System.EventHandler(this.Settings_PB_MouseEnter);
             this.Settings_PB.MouseLeave += new System.EventHandler(this.Settings_PB_MouseLeave);
-            // 
-            // searchBar
-            // 
-            this.searchBar.Dock = System.Windows.Forms.DockStyle.Top;
-            this.searchBar.Location = new System.Drawing.Point(0, 0);
-            this.searchBar.Name = "searchBar";
-            this.searchBar.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
-            this.searchBar.Size = new System.Drawing.Size(320, 32);
-            this.searchBar.TabIndex = 0;
             // 
             // Form1
             // 
@@ -164,6 +175,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label Add_Lbl;
         private System.Windows.Forms.Label Exit_Lbl;
+        private DisplayNote displayNote1;
     }
 }
 

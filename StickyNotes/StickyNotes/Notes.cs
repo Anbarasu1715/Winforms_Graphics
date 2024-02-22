@@ -21,8 +21,8 @@ namespace StickyNotes
             this.BackColor = Color.Magenta;
             brush = new SolidBrush(ColorTranslator.FromHtml("#333333"));
             HomePanel.BackColor = ColorTranslator.FromHtml("#E6B905");
-            Editor_TextBox.Location = new Point(0,HomePanel.Height);
-            Editor_TextBox.Size = new Size(Width,Height-HomePanel.Height-Option_Panel.Height);
+            Editor_TextBox.Location = new Point(0, HomePanel.Height);
+            Editor_TextBox.Size = new Size(Width, Height - HomePanel.Height - Option_Panel.Height);
             Editor_TextBox.BackColor = ColorTranslator.FromHtml("#333333");
             Option_Panel.BackColor = ColorTranslator.FromHtml("#333333");
             Bold_PB.BackColor = ColorTranslator.FromHtml("#333333");
@@ -46,9 +46,27 @@ namespace StickyNotes
         private Color SelectedColor;
         private Brush brush;
 
-        public EventHandler<string> OnTextChange;
+        public EventHandler<Object> OnTextChange;
+        public EventHandler<RichTextBox> OnTextHeightChange;
+        public EventHandler<ColorContrast> OnColorChange;
+        public EventHandler OnCreateNote;
+        public EventHandler OnDisplayList;
+        public EventHandler OnDeleteNote;
 
-        public string ContentText { get;   set; }
+        private string _contentText;
+
+        public string ContentText
+        {
+            get
+            {
+                return _contentText;
+            }
+            set
+            {
+                _contentText = value;
+                OnTextHeightChange?.Invoke(this, Editor_TextBox);
+            }
+        }
 
         private void Notes_Paint(object sender, PaintEventArgs e)
         {
@@ -69,7 +87,7 @@ namespace StickyNotes
 
         private void Editor_TextBox_TextChanged(object sender, EventArgs e)
         {
-            OnTextChange?.Invoke(sender, Editor_TextBox.Rtf);
+            OnTextChange?.Invoke(this, sender);
         }
 
         private void AddRoundRect(GraphicsPath path, int x, int y, int width, int height, int cornerRadius)
@@ -223,6 +241,11 @@ namespace StickyNotes
             label2.BackColor = OriginalColor;
             SelectedColor = OriginalColor;
             Invalidate();
+            ColorContrast obj = new ColorContrast() {
+                HeaderColor = ColorTranslator.ToHtml(HeaderColor)+"",
+                OriginalColor=ColorTranslator.ToHtml(OriginalColor)+""
+            };
+            OnColorChange?.Invoke(this,obj);
         }
 
         private void Editor_TextBox_Click(object sender, EventArgs e)
@@ -280,6 +303,21 @@ namespace StickyNotes
 
             Editor_TextBox.SelectionStart = selectionStart;
             Editor_TextBox.Focus();
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+            OnCreateNote?.Invoke(sender,e);
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+            OnDisplayList?.Invoke(sender,e);
+        }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+            OnDeleteNote?.Invoke(this,e);
         }
     }
 }

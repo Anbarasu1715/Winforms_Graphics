@@ -40,7 +40,7 @@
             this.SearchBox_TB.Location = new System.Drawing.Point(0, 0);
             this.SearchBox_TB.Multiline = true;
             this.SearchBox_TB.Name = "SearchBox_TB";
-            this.SearchBox_TB.Size = new System.Drawing.Size(207, 28);
+            this.SearchBox_TB.Size = new System.Drawing.Size(295, 28);
             this.SearchBox_TB.TabIndex = 0;
             this.SearchBox_TB.Tag = "";
             this.SearchBox_TB.Enter += new System.EventHandler(this.SearchBox_TB_Enter);
@@ -52,7 +52,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.SearchBox_TB);
             this.Name = "SearchBar";
-            this.Size = new System.Drawing.Size(207, 28);
+            this.Size = new System.Drawing.Size(295, 28);
             this.ResumeLayout(false);
             this.PerformLayout();
 
