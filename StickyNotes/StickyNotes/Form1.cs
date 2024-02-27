@@ -167,6 +167,9 @@ namespace StickyNotes
 
 
 
+
+
+
                         pairs.RemoveAll(pair => pair.Key == note);
                         ReLocate();
                         break;
