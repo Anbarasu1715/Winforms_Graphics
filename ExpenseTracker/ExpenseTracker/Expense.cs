@@ -8,6 +8,7 @@ namespace ExpenseTracker
 {
     public class Expense
     {
+        public int ID;
         public string category;
         public Decimal Amount;
         public DateTime Date;
