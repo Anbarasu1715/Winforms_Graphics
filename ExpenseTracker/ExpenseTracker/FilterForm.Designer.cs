@@ -30,15 +30,15 @@
         {
             this.CateFilter = new System.Windows.Forms.Button();
             this.DateFilter = new System.Windows.Forms.Button();
-            this.MonthFilter = new System.Windows.Forms.Button();
-            this.DailyFilter = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.CategoryCB = new System.Windows.Forms.ComboBox();
             this.DateRangePanel = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.DateDTP = new System.Windows.Forms.DateTimePicker();
+            this.StartDate = new System.Windows.Forms.DateTimePicker();
+            this.EndDate = new System.Windows.Forms.DateTimePicker();
+            this.DailyFilter = new System.Windows.Forms.Button();
+            this.MonthFilter = new System.Windows.Forms.Button();
             this.DateRangePanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -53,42 +53,20 @@
             this.CateFilter.TabIndex = 17;
             this.CateFilter.Text = "Search by Category";
             this.CateFilter.UseVisualStyleBackColor = false;
+            this.CateFilter.Click += new System.EventHandler(this.CateFilter_Click);
             // 
             // DateFilter
             // 
             this.DateFilter.BackColor = System.Drawing.Color.DimGray;
             this.DateFilter.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DateFilter.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.DateFilter.Location = new System.Drawing.Point(33, 115);
+            this.DateFilter.Location = new System.Drawing.Point(33, 146);
             this.DateFilter.Name = "DateFilter";
             this.DateFilter.Size = new System.Drawing.Size(236, 43);
             this.DateFilter.TabIndex = 18;
             this.DateFilter.Text = "Search by Date Range";
             this.DateFilter.UseVisualStyleBackColor = false;
-            // 
-            // MonthFilter
-            // 
-            this.MonthFilter.BackColor = System.Drawing.Color.DimGray;
-            this.MonthFilter.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MonthFilter.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.MonthFilter.Location = new System.Drawing.Point(33, 172);
-            this.MonthFilter.Name = "MonthFilter";
-            this.MonthFilter.Size = new System.Drawing.Size(236, 43);
-            this.MonthFilter.TabIndex = 19;
-            this.MonthFilter.Text = "Month basis";
-            this.MonthFilter.UseVisualStyleBackColor = false;
-            // 
-            // DailyFilter
-            // 
-            this.DailyFilter.BackColor = System.Drawing.Color.DimGray;
-            this.DailyFilter.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DailyFilter.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.DailyFilter.Location = new System.Drawing.Point(33, 225);
-            this.DailyFilter.Name = "DailyFilter";
-            this.DailyFilter.Size = new System.Drawing.Size(236, 43);
-            this.DailyFilter.TabIndex = 20;
-            this.DailyFilter.Text = "Daily basis";
-            this.DailyFilter.UseVisualStyleBackColor = false;
+            this.DateFilter.Click += new System.EventHandler(this.DateFilter_Click);
             // 
             // label8
             // 
@@ -105,7 +83,7 @@
             // 
             this.CategoryCB.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CategoryCB.FormattingEnabled = true;
-            this.CategoryCB.Location = new System.Drawing.Point(33, 288);
+            this.CategoryCB.Location = new System.Drawing.Point(33, 111);
             this.CategoryCB.Name = "CategoryCB";
             this.CategoryCB.Size = new System.Drawing.Size(236, 29);
             this.CategoryCB.TabIndex = 22;
@@ -114,9 +92,9 @@
             // 
             this.DateRangePanel.Controls.Add(this.label1);
             this.DateRangePanel.Controls.Add(this.label5);
-            this.DateRangePanel.Controls.Add(this.dateTimePicker1);
-            this.DateRangePanel.Controls.Add(this.DateDTP);
-            this.DateRangePanel.Location = new System.Drawing.Point(33, 334);
+            this.DateRangePanel.Controls.Add(this.StartDate);
+            this.DateRangePanel.Controls.Add(this.EndDate);
+            this.DateRangePanel.Location = new System.Drawing.Point(33, 195);
             this.DateRangePanel.Name = "DateRangePanel";
             this.DateRangePanel.Size = new System.Drawing.Size(236, 100);
             this.DateRangePanel.TabIndex = 23;
@@ -141,36 +119,62 @@
             this.label5.TabIndex = 29;
             this.label5.Text = "From";
             // 
-            // dateTimePicker1
+            // StartDate
             // 
-            this.dateTimePicker1.CustomFormat = "dd-MM-yyyy";
-            this.dateTimePicker1.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePicker1.Location = new System.Drawing.Point(60, 16);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(176, 25);
-            this.dateTimePicker1.TabIndex = 28;
+            this.StartDate.CustomFormat = "dd-MM-yyyy";
+            this.StartDate.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.StartDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.StartDate.Location = new System.Drawing.Point(60, 16);
+            this.StartDate.Name = "StartDate";
+            this.StartDate.Size = new System.Drawing.Size(176, 25);
+            this.StartDate.TabIndex = 28;
             // 
-            // DateDTP
+            // EndDate
             // 
-            this.DateDTP.CustomFormat = "dd-MM-yyyy";
-            this.DateDTP.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DateDTP.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.DateDTP.Location = new System.Drawing.Point(60, 57);
-            this.DateDTP.Name = "DateDTP";
-            this.DateDTP.Size = new System.Drawing.Size(176, 25);
-            this.DateDTP.TabIndex = 27;
+            this.EndDate.CustomFormat = "dd-MM-yyyy";
+            this.EndDate.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.EndDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.EndDate.Location = new System.Drawing.Point(60, 57);
+            this.EndDate.Name = "EndDate";
+            this.EndDate.Size = new System.Drawing.Size(176, 25);
+            this.EndDate.TabIndex = 27;
+            // 
+            // DailyFilter
+            // 
+            this.DailyFilter.BackColor = System.Drawing.Color.DimGray;
+            this.DailyFilter.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DailyFilter.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.DailyFilter.Location = new System.Drawing.Point(33, 367);
+            this.DailyFilter.Name = "DailyFilter";
+            this.DailyFilter.Size = new System.Drawing.Size(236, 43);
+            this.DailyFilter.TabIndex = 25;
+            this.DailyFilter.Text = "Daily basis";
+            this.DailyFilter.UseVisualStyleBackColor = false;
+            this.DailyFilter.Click += new System.EventHandler(this.DailyFilter_Click);
+            // 
+            // MonthFilter
+            // 
+            this.MonthFilter.BackColor = System.Drawing.Color.DimGray;
+            this.MonthFilter.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MonthFilter.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.MonthFilter.Location = new System.Drawing.Point(33, 314);
+            this.MonthFilter.Name = "MonthFilter";
+            this.MonthFilter.Size = new System.Drawing.Size(236, 43);
+            this.MonthFilter.TabIndex = 24;
+            this.MonthFilter.Text = "Month basis";
+            this.MonthFilter.UseVisualStyleBackColor = false;
+            this.MonthFilter.Click += new System.EventHandler(this.MonthFilter_Click);
             // 
             // FilterForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(301, 446);
+            this.Controls.Add(this.DailyFilter);
+            this.Controls.Add(this.MonthFilter);
             this.Controls.Add(this.DateRangePanel);
             this.Controls.Add(this.CategoryCB);
             this.Controls.Add(this.label8);
-            this.Controls.Add(this.DailyFilter);
-            this.Controls.Add(this.MonthFilter);
             this.Controls.Add(this.DateFilter);
             this.Controls.Add(this.CateFilter);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
@@ -186,14 +190,14 @@
 
         private System.Windows.Forms.Button CateFilter;
         private System.Windows.Forms.Button DateFilter;
-        private System.Windows.Forms.Button MonthFilter;
-        private System.Windows.Forms.Button DailyFilter;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.ComboBox CategoryCB;
         private System.Windows.Forms.Panel DateRangePanel;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
-        private System.Windows.Forms.DateTimePicker DateDTP;
+        private System.Windows.Forms.DateTimePicker StartDate;
+        private System.Windows.Forms.DateTimePicker EndDate;
+        private System.Windows.Forms.Button DailyFilter;
+        private System.Windows.Forms.Button MonthFilter;
     }
 }

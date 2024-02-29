@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MySql.Data.MySqlClient;
 
 namespace StickyNotes
 {
@@ -34,6 +35,33 @@ namespace StickyNotes
 
             SearchBarHeight = searchBar.Height;
             
+        }
+
+        private void EstablishDB(Object sender,EventArgs e)
+        {
+            string address = "server=localhost;port=3306;uid=root;pwd=lucid;database=stickynotes";
+            MySqlConnection con = new MySqlConnection();
+            con.ConnectionString = address;
+            try
+            {
+                con.Open();
+                //string query = "select * from persons";
+                //MySqlCommand cmd = new MySqlCommand(query, con);
+                //MySqlDataReader reader = cmd.ExecuteReader();
+
+                //string result = "";
+                //while (reader.Read())
+                //{
+                //    result += "Id=" + reader["PersonID"] + "  Name=" + reader["FirstName"] + "  City=" + reader["City"] + "\n";
+                //}
+                MessageBox.Show("connected");
+
+                con.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void exitLbl1_Load(object sender, EventArgs e)
@@ -164,12 +192,6 @@ namespace StickyNotes
                     {
                         note.Close();
                         panel3.Controls.Remove(kvp.Value);
-
-
-
-
-
-
                         pairs.RemoveAll(pair => pair.Key == note);
                         ReLocate();
                         break;

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MySql.Data.MySqlClient;
 
 namespace ExpenseTracker
 {
@@ -30,6 +31,33 @@ namespace ExpenseTracker
         public static List<Category> categories = new List<Category>();
         public static List<Expense> Expenses = new List<Expense>();
         public static List<Expense> DisplayExpenses = new List<Expense>();
+
+        private void EstablishDB(Object sender, EventArgs e)
+        {
+            string address = "server=localhost;port=3306;uid=root;pwd=lucid;database=stickynotes";
+            MySqlConnection con = new MySqlConnection();
+            con.ConnectionString = address;
+            try
+            {
+                con.Open();
+                //string query = "select * from persons";
+                //MySqlCommand cmd = new MySqlCommand(query, con);
+                //MySqlDataReader reader = cmd.ExecuteReader();
+
+                //string result = "";
+                //while (reader.Read())
+                //{
+                //    result += "Id=" + reader["PersonID"] + "  Name=" + reader["FirstName"] + "  City=" + reader["City"] + "\n";
+                //}
+                MessageBox.Show("connected");
+
+                con.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
 
         private void HideAndShow(Control sender)
         {
@@ -255,6 +283,20 @@ namespace ExpenseTracker
 
                 DisplayContent();
             }
+        }
+
+        private FilterForm FilterForm;
+        private void FilterBtn_Click(object sender, EventArgs e)
+        {
+            FilterForm?.Dispose();
+            if (Expenses.Count > 0)
+            {
+                FilterForm = new FilterForm();
+                FilterForm.Show();
+                FilterForm.OnFilterClick += DisplayUpadatedList;
+            }
+            else
+                WarningLabel.Text = "List Empty...!";
         }
     }
 }

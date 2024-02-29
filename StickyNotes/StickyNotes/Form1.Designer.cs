@@ -30,17 +30,18 @@
         {
             this.panel1 = new System.Windows.Forms.Panel();
             this.Add_Lbl = new System.Windows.Forms.Label();
+            this.Settings_PB = new System.Windows.Forms.PictureBox();
             this.Exit_Lbl = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
             this.searchBar = new StickyNotes.SearchBar();
             this.displayNote1 = new StickyNotes.DisplayNote();
-            this.Settings_PB = new System.Windows.Forms.PictureBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Settings_PB)).BeginInit();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Settings_PB)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -67,6 +68,20 @@
             this.Add_Lbl.Click += new System.EventHandler(this.Add_Lbl_Click);
             this.Add_Lbl.MouseEnter += new System.EventHandler(this.Add_Lbl_MouseEnter);
             this.Add_Lbl.MouseLeave += new System.EventHandler(this.Add_Lbl_MouseLeave);
+            // 
+            // Settings_PB
+            // 
+            this.Settings_PB.Dock = System.Windows.Forms.DockStyle.Right;
+            this.Settings_PB.Image = global::StickyNotes.Images.settings1;
+            this.Settings_PB.Location = new System.Drawing.Point(247, 0);
+            this.Settings_PB.Name = "Settings_PB";
+            this.Settings_PB.Size = new System.Drawing.Size(32, 37);
+            this.Settings_PB.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.Settings_PB.TabIndex = 1;
+            this.Settings_PB.TabStop = false;
+            this.Settings_PB.Click += new System.EventHandler(this.Settings_PB_Click);
+            this.Settings_PB.MouseEnter += new System.EventHandler(this.Settings_PB_MouseEnter);
+            this.Settings_PB.MouseLeave += new System.EventHandler(this.Settings_PB_MouseLeave);
             // 
             // Exit_Lbl
             // 
@@ -106,6 +121,7 @@
             // panel3
             // 
             this.panel3.AutoScroll = true;
+            this.panel3.Controls.Add(this.button1);
             this.panel3.Controls.Add(this.searchBar);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel3.Location = new System.Drawing.Point(0, 74);
@@ -131,19 +147,15 @@
             this.displayNote1.Size = new System.Drawing.Size(295, 55);
             this.displayNote1.TabIndex = 1;
             // 
-            // Settings_PB
+            // button1
             // 
-            this.Settings_PB.Dock = System.Windows.Forms.DockStyle.Right;
-            this.Settings_PB.Image = global::StickyNotes.Images.settings1;
-            this.Settings_PB.Location = new System.Drawing.Point(247, 0);
-            this.Settings_PB.Name = "Settings_PB";
-            this.Settings_PB.Size = new System.Drawing.Size(32, 37);
-            this.Settings_PB.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.Settings_PB.TabIndex = 1;
-            this.Settings_PB.TabStop = false;
-            this.Settings_PB.Click += new System.EventHandler(this.Settings_PB_Click);
-            this.Settings_PB.MouseEnter += new System.EventHandler(this.Settings_PB_MouseEnter);
-            this.Settings_PB.MouseLeave += new System.EventHandler(this.Settings_PB_MouseLeave);
+            this.button1.Location = new System.Drawing.Point(67, 316);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(179, 85);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.EstablishDB);
             // 
             // Form1
             // 
@@ -158,9 +170,9 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
             this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.Settings_PB)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.Settings_PB)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -176,6 +188,7 @@
         private System.Windows.Forms.Label Add_Lbl;
         private System.Windows.Forms.Label Exit_Lbl;
         private DisplayNote displayNote1;
+        private System.Windows.Forms.Button button1;
     }
 }
 

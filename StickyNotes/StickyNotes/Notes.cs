@@ -237,11 +237,12 @@ namespace StickyNotes
             Editor_TextBox.BackColor = HeaderColor;
             HomePanel.BackColor = OriginalColor;
             Exit_Lbl.BackColor = OriginalColor;
-            label1.BackColor = OriginalColor;
+            label1.BackColor =  OriginalColor;
             label2.BackColor = OriginalColor;
             SelectedColor = OriginalColor;
             Invalidate();
-            ColorContrast obj = new ColorContrast() {
+            ColorContrast obj = new ColorContrast()
+            {
                 HeaderColor = ColorTranslator.ToHtml(HeaderColor)+"",
                 OriginalColor=ColorTranslator.ToHtml(OriginalColor)+""
             };

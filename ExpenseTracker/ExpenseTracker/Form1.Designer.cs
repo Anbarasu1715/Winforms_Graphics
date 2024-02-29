@@ -36,7 +36,6 @@
             this.DeleteBtn = new System.Windows.Forms.Button();
             this.UpdateBtn = new System.Windows.Forms.Button();
             this.AddBtn = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.AddExpensePanel = new System.Windows.Forms.Panel();
@@ -64,8 +63,9 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.ResultLbl = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.AddExpensePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AmountNB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DataView)).BeginInit();
@@ -73,6 +73,7 @@
             this.AddCategoryPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LimitNB)).BeginInit();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -142,6 +143,7 @@
             this.FilterBtn.TabIndex = 6;
             this.FilterBtn.Text = "Filter";
             this.FilterBtn.UseVisualStyleBackColor = false;
+            this.FilterBtn.Click += new System.EventHandler(this.FilterBtn_Click);
             // 
             // DeleteBtn
             // 
@@ -181,16 +183,6 @@
             this.AddBtn.Text = "Add";
             this.AddBtn.UseVisualStyleBackColor = false;
             this.AddBtn.Click += new System.EventHandler(this.AddBtn_Click);
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = global::ExpenseTracker.Properties.Resources.ExpenseTracker;
-            this.pictureBox1.Location = new System.Drawing.Point(7, 24);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(54, 50);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 2;
-            this.pictureBox1.TabStop = false;
             // 
             // label2
             // 
@@ -442,6 +434,7 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.button1);
             this.panel2.Controls.Add(this.ResultLbl);
             this.panel2.Controls.Add(this.label10);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -469,6 +462,29 @@
             this.label10.TabIndex = 3;
             this.label10.Text = "Total Amount";
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::ExpenseTracker.Properties.Resources.ExpenseTracker;
+            this.pictureBox1.Location = new System.Drawing.Point(7, 24);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(54, 50);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 2;
+            this.pictureBox1.TabStop = false;
+            // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.DimGray;
+            this.button1.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.button1.Location = new System.Drawing.Point(81, 15);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(128, 43);
+            this.button1.TabIndex = 5;
+            this.button1.Text = "Add";
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.EstablishDB);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -485,7 +501,6 @@
             this.Move += new System.EventHandler(this.Form1_Move);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.AddExpensePanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.AmountNB)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DataView)).EndInit();
@@ -494,6 +509,7 @@
             this.AddCategoryPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LimitNB)).EndInit();
             this.panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -536,6 +552,7 @@
         private System.Windows.Forms.Label ResultLbl;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
+        private System.Windows.Forms.Button button1;
     }
 }
 
