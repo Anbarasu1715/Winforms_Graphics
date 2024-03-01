@@ -37,7 +37,6 @@
             this.panel3 = new System.Windows.Forms.Panel();
             this.searchBar = new StickyNotes.SearchBar();
             this.displayNote1 = new StickyNotes.DisplayNote();
-            this.button1 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Settings_PB)).BeginInit();
             this.panel2.SuspendLayout();
@@ -121,7 +120,6 @@
             // panel3
             // 
             this.panel3.AutoScroll = true;
-            this.panel3.Controls.Add(this.button1);
             this.panel3.Controls.Add(this.searchBar);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel3.Location = new System.Drawing.Point(0, 74);
@@ -146,16 +144,6 @@
             this.displayNote1.Name = "displayNote1";
             this.displayNote1.Size = new System.Drawing.Size(295, 55);
             this.displayNote1.TabIndex = 1;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(67, 316);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(179, 85);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.EstablishDB);
             // 
             // Form1
             // 
@@ -188,7 +176,6 @@
         private System.Windows.Forms.Label Add_Lbl;
         private System.Windows.Forms.Label Exit_Lbl;
         private DisplayNote displayNote1;
-        private System.Windows.Forms.Button button1;
     }
 }
 

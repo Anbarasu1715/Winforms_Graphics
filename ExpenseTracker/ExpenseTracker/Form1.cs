@@ -23,7 +23,46 @@ namespace ExpenseTracker
                 control.Hide();
             }
             WarningLabel.Text="";
+
+            //DataBase Connection
+            con = new MySqlConnection();
+            string address = "server=localhost;port=3306;uid=root;pwd=lucid;database=expensetracker";
+            con.ConnectionString = address;
+
+            try
+            {
+                con.Open();
+                //string query = "create table Expense(Id int,Category varchar(250),Amount Decimal(10,4),Date varchar(100))";
+                //MySqlCommand cmd = new MySqlCommand(query,con);
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.Message);
+            }
+
+
+            //Retrive category from Database
+            string RetriveCategory = "select distinct Type from Categories";
+            MySqlCommand RetriveCmd = new MySqlCommand(RetriveCategory, con);
+            try
+            {
+                MySqlDataReader reader = RetriveCmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    string cate = reader.GetString(0);
+                    CategoryCB.Items.Add(cate);
+                }
+                reader.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
         }
+
+        MySqlConnection con;
+        private MySqlCommand Command;
 
         private int RowIndex;
         private int ID=1050;
@@ -34,29 +73,31 @@ namespace ExpenseTracker
 
         private void EstablishDB(Object sender, EventArgs e)
         {
-            string address = "server=localhost;port=3306;uid=root;pwd=lucid;database=stickynotes";
-            MySqlConnection con = new MySqlConnection();
-            con.ConnectionString = address;
-            try
-            {
-                con.Open();
-                //string query = "select * from persons";
-                //MySqlCommand cmd = new MySqlCommand(query, con);
-                //MySqlDataReader reader = cmd.ExecuteReader();
 
-                //string result = "";
-                //while (reader.Read())
-                //{
-                //    result += "Id=" + reader["PersonID"] + "  Name=" + reader["FirstName"] + "  City=" + reader["City"] + "\n";
-                //}
-                MessageBox.Show("connected");
+            //string address = "server=localhost;uid=root;pwd=lucid;database=stickynotes";
+            //MySqlConnection con = new MySqlConnection();
+            //con.ConnectionString = address;
+            //try
+            //{
 
-                con.Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            //    con.Open();
+            //    string query = "select * from persons";
+            //    MySqlCommand cmd = new MySqlCommand(query, con);
+            //    MySqlDataReader reader = cmd.ExecuteReader();
+
+            //    string result = "";
+            //    while (reader.Read())
+            //    {
+            //        result += "Id=" + reader["PersonID"] + "  Name=" + reader["FirstName"] + "  City=" + reader["City"] + "\n";
+            //    }
+            //    MessageBox.Show("connected");
+
+            //    con.Close();
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show(ex.Message);
+            //}
         }
 
         private void HideAndShow(Control sender)
@@ -101,6 +142,21 @@ namespace ExpenseTracker
             {
                 categories.Add(new Category() {CategoryName=CateName,Limit=Limit });
                 CategoryCB.Items.Add(CateName);
+
+                //Insert Category into table
+                string InsertCate = $"Insert into categories values('{CateName}',{Limit})";
+                //string InsertCate = $"Insert into categories values('Food',{Limit})";
+                Command = new MySqlCommand(InsertCate,con);
+                try
+                {
+                    Command.ExecuteNonQuery();
+                    //Command?.Dispose();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+
                 WarningLabel.Text = "Added Successfully";
             }
         }
@@ -136,6 +192,27 @@ namespace ExpenseTracker
 
             ID++;
             Expenses.Add(new Expense() {ID=ID,category=CateName,Amount=Amount,Date=Date});
+
+            string date = Date.Date.ToShortDateString();
+
+            //Insert values
+            string CheckQuery = "select max(Id) from expense";
+            MySqlCommand CheckCmd = new MySqlCommand(CheckQuery,con);
+            object result = 1;
+            try
+            {
+                result = (CheckCmd.ExecuteScalar());
+                ID = int.Parse(result + "");
+                ID++;
+
+                string InsertQuery = $"insert into expense values({ID},'{CateName}',{Amount},'{date}');";
+                MySqlCommand InsertCmd = new MySqlCommand(InsertQuery, con);
+                InsertCmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private bool CheckLimit(string CateName,Decimal Amount, DateTime Date)

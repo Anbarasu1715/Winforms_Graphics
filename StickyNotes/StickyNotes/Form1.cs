@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using MySql.Data.MySqlClient;
+
 
 namespace StickyNotes
 {
@@ -45,16 +46,16 @@ namespace StickyNotes
             try
             {
                 con.Open();
-                //string query = "select * from persons";
-                //MySqlCommand cmd = new MySqlCommand(query, con);
-                //MySqlDataReader reader = cmd.ExecuteReader();
+                string query = "select * from persons";
+                MySqlCommand cmd = new MySqlCommand(query, con);
+                MySqlDataReader reader = cmd.ExecuteReader();
 
-                //string result = "";
-                //while (reader.Read())
-                //{
-                //    result += "Id=" + reader["PersonID"] + "  Name=" + reader["FirstName"] + "  City=" + reader["City"] + "\n";
-                //}
-                MessageBox.Show("connected");
+                string result = "";
+                while (reader.Read())
+                {
+                    result += "Id=" + reader["PersonID"] + "  Name=" + reader["FirstName"] + "  City=" + reader["City"] + "\n";
+                }
+                MessageBox.Show(result);
 
                 con.Close();
             }
