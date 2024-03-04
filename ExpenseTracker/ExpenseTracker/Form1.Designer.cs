@@ -227,7 +227,7 @@
             this.AddExpensePanel.Controls.Add(this.label3);
             this.AddExpensePanel.Location = new System.Drawing.Point(403, 50);
             this.AddExpensePanel.Name = "AddExpensePanel";
-            this.AddExpensePanel.Size = new System.Drawing.Size(63, 97);
+            this.AddExpensePanel.Size = new System.Drawing.Size(58, 159);
             this.AddExpensePanel.TabIndex = 2;
             // 
             // label9
@@ -256,7 +256,7 @@
             // 
             // DateDTP
             // 
-            this.DateDTP.CustomFormat = "dd-MM-yyyy";
+            this.DateDTP.CustomFormat = "yyyy-mm-dd";
             this.DateDTP.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DateDTP.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.DateDTP.Location = new System.Drawing.Point(175, 176);

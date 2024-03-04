@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MySql.Data.MySqlClient;
 
 namespace ExpenseTracker
 {
@@ -18,6 +19,7 @@ namespace ExpenseTracker
         }
 
         public EventHandler<string> OnUpdateData;
+        public EventHandler<string> OnFilterClick;
 
         public void SetData(int Id,string category,decimal Amount,DateTime date)
         {
@@ -31,14 +33,11 @@ namespace ExpenseTracker
         {
             int Id = int.Parse(IDLbl.Text);
 
-            foreach (var exp in Form1.Expenses)
-            {
-                if (Id==exp.ID)
-                {
-                    exp.Update(UpdateCategoryTB.Text, UpdateLimitNB.Value, UpdateDateDTP.Value.Date);
-                }
-            }
+            string query = $"UPDATE expense SET Category='{UpdateCategoryTB.Text}', Amount={UpdateLimitNB.Value}, Date='{UpdateDateDTP.Value.ToString("yyyy-MM-dd")}' WHERE Id={Id}";
+            MySqlCommand command = new MySqlCommand(query,Form1.con);
+            command.ExecuteNonQuery();
 
+            OnFilterClick?.Invoke(sender,Form1.CurrentQuery);
             OnUpdateData?.Invoke(sender,"Updated Successfully");
             
             this.Dispose();

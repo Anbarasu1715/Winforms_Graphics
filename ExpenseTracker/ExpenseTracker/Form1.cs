@@ -32,15 +32,32 @@ namespace ExpenseTracker
             try
             {
                 con.Open();
-                //string query = "create table Expense(Id int,Category varchar(250),Amount Decimal(10,4),Date varchar(100))";
-                //MySqlCommand cmd = new MySqlCommand(query,con);
             }
             catch (Exception exception)
             {
                 MessageBox.Show(exception.Message);
             }
+            finally
+            {
+                
+            }
 
+            FillComboBox(CategoryCB);
+        }
 
+        public static MySqlConnection con;
+        private MySqlCommand Command;
+
+        private int RowIndex;
+        private int ID=1050;
+        public static string CurrentQuery = "Select * from expense";
+
+        //public static List<Category> categories = new List<Category>();
+        //public static List<Expense> Expenses = new List<Expense>();
+        //public static List<Expense> DisplayExpenses = new List<Expense>();
+
+        public static void FillComboBox(Control cb)
+        {
             //Retrive category from Database
             string RetriveCategory = "select distinct Type from Categories";
             MySqlCommand RetriveCmd = new MySqlCommand(RetriveCategory, con);
@@ -50,7 +67,7 @@ namespace ExpenseTracker
                 while (reader.Read())
                 {
                     string cate = reader.GetString(0);
-                    CategoryCB.Items.Add(cate);
+                    (cb as ComboBox).Items.Add(cate);
                 }
                 reader.Close();
             }
@@ -58,18 +75,7 @@ namespace ExpenseTracker
             {
                 MessageBox.Show(ex.Message);
             }
-
         }
-
-        MySqlConnection con;
-        private MySqlCommand Command;
-
-        private int RowIndex;
-        private int ID=1050;
-
-        public static List<Category> categories = new List<Category>();
-        public static List<Expense> Expenses = new List<Expense>();
-        public static List<Expense> DisplayExpenses = new List<Expense>();
 
         private void EstablishDB(Object sender, EventArgs e)
         {
@@ -134,30 +140,20 @@ namespace ExpenseTracker
             {
                 WarningLabel.Text = "Fields are Empty";
             }
-            else if (categories.Any(item => item.CategoryName == CateName))
-            {
-                WarningLabel.Text = "Category Available";
-            }
             else
             {
-                categories.Add(new Category() {CategoryName=CateName,Limit=Limit });
-                CategoryCB.Items.Add(CateName);
-
                 //Insert Category into table
                 string InsertCate = $"Insert into categories values('{CateName}',{Limit})";
-                //string InsertCate = $"Insert into categories values('Food',{Limit})";
                 Command = new MySqlCommand(InsertCate,con);
                 try
                 {
                     Command.ExecuteNonQuery();
-                    //Command?.Dispose();
+                    WarningLabel.Text = "Added Successfully";
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    WarningLabel.Text = "Category Available";
                 }
-
-                WarningLabel.Text = "Added Successfully";
             }
         }
 
@@ -191,9 +187,8 @@ namespace ExpenseTracker
                 WarningLabel.Text = "Expense Added Successfully";
 
             ID++;
-            Expenses.Add(new Expense() {ID=ID,category=CateName,Amount=Amount,Date=Date});
 
-            string date = Date.Date.ToShortDateString();
+            string date = Date.Date.ToString("yyyy-MM-dd");
 
             //Insert values
             string CheckQuery = "select max(Id) from expense";
@@ -220,76 +215,98 @@ namespace ExpenseTracker
             int Month = Date.Month;
             int Year = Date.Year;
 
-            Decimal ExpenseLimit = 0;
-            Decimal CurrentLimit = Amount;
+            decimal LimitAmt=0;
+            decimal totalAmount=Amount;
 
-            foreach (var cate in categories)
+            DateTime StartDate = new DateTime(Year,Month,1);
+            DateTime EndDate = StartDate.AddMonths(1).AddDays(-1);
+
+            string query = $"SELECT SUM(Amount) AS TotalAmount FROM expense WHERE Category = '{CateName}' AND Date >= '{StartDate:yyyy-MM-dd}' And Date <='{EndDate:yyyy-MM-dd}'";
+            Command = new MySqlCommand(query,con);
+
+            string CheckQuery = $"select CateGory_Limit from categories where Type='{CateName}'";
+            MySqlCommand newCmd = new MySqlCommand(CheckQuery,con);
+            try
             {
-                if (cate.CategoryName==CateName)
+                object result = Command.ExecuteScalar();
+                LimitAmt = Convert.ToDecimal(newCmd.ExecuteScalar());
+
+                if (result != null && result != DBNull.Value)
                 {
-                    ExpenseLimit = cate.Limit;
-                    break;
+                    totalAmount += Convert.ToDecimal(result);
                 }
+
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
             }
 
-            foreach (var expense in Expenses)
-            {
-                if (expense.Date.Month==Month && expense.Date.Year==Year && expense.category==CateName)
-                {
-                    CurrentLimit += expense.Amount;
-                }
-            }
-
-            if (CurrentLimit > ExpenseLimit)
+            if (totalAmount > LimitAmt)
                 return true;
             else
                 return false;
-
-
         }
 
         private void ViewExpenses_Click(object sender, EventArgs e)
         {
             HideAndShow(DataView);
             DataView.Rows.Clear();
-            DisplayExpenses.Clear();
 
             DataView.Dock = DockStyle.Fill;
             DataView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             DataView.DefaultCellStyle.Font = new Font("Segoe UI semibold",9);
             DataView.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI Semibold", 12);
 
-            foreach (var expense in Expenses)
-            {
-                DisplayExpenses.Add(expense);
-            }
-
-            DisplayContent();
+            string Query = "select * from expense";
+            DisplayContent(Query);
         }
 
-        private void DisplayContent()
+        private void DisplayContent(string Query)
         {
             DataView.Rows.Clear();
-
             decimal TotalAmount = 0;
+            CurrentQuery = Query;
 
-            foreach (var expense in DisplayExpenses)
+            Command = new MySqlCommand(Query,con);
+            MySqlDataReader reader=null;
+            try
             {
-                RowIndex = DataView.Rows.Add();
-                DataView.Rows[RowIndex].Cells[0].Value = expense.category;
-                DataView.Rows[RowIndex].Cells[1].Value = expense.Amount;
-                DataView.Rows[RowIndex].Cells[2].Value = expense.Date.Date.ToString("dd-MM-yyyy");
-                DataView.Rows[RowIndex].Cells[3].Value = expense.ID;
+                reader = Command.ExecuteReader();
 
-                TotalAmount += expense.Amount;
+                while (reader.Read())
+                {
+                    RowIndex = DataView.Rows.Add();
+                    DataView.Rows[RowIndex].Cells[0].Value = reader.GetString(1);
+                    DataView.Rows[RowIndex].Cells[1].Value = reader.GetDecimal(2);
+                    DataView.Rows[RowIndex].Cells[2].Value = reader.GetDateTime(3).ToShortDateString();
+                    DataView.Rows[RowIndex].Cells[3].Value = reader.GetInt32(0);
+
+                    TotalAmount += Convert.ToDecimal(reader.GetDecimal(2));
+                }
+
+                ResultLbl.Text = "" + TotalAmount;
             }
-
-            ResultLbl.Text = "" + TotalAmount;
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                reader?.Close();
+            }
         }
 
         public void DisplayUpadatedList(object sender,string e)
         {
-            DisplayContent();
+            HideAndShow(DataView);
+
+            DataView.Dock = DockStyle.Fill;
+            DataView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            DataView.DefaultCellStyle.Font = new Font("Segoe UI semibold", 9);
+            DataView.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI Semibold", 12);
+
+            DisplayContent(e);
         }
 
         private UpdateForm updateForm;
@@ -297,13 +314,13 @@ namespace ExpenseTracker
 
         private void UpdateBtn_Click(object sender, EventArgs e)
         {
-            if (DataView.SelectedCells.Count>0)
+             if (DataView.SelectedCells.Count>0 && DataView.SelectedCells.Count < 2 && DataView.Visible == true)
             {
                 updateForm?.Dispose();
                 updateForm = new UpdateForm();
                 updateForm.Show();
                 updateForm.OnUpdateData += SetWarning;
-                updateForm.OnUpdateData += DisplayUpadatedList;
+                updateForm.OnFilterClick += DisplayUpadatedList;
 
                 DataGridViewCell SelectedCell = DataView.SelectedCells[0];
                 SelectedRowIndex=SelectedCell.RowIndex;
@@ -334,31 +351,20 @@ namespace ExpenseTracker
 
         private void DeleteBtn_Click(object sender, EventArgs e)
         {
-            if (DataView.SelectedCells.Count > 0)
+            if (DataView.SelectedCells.Count > 0 && DataView.Visible==true)
             {
                 DataGridViewCell SelectedCell = DataView.SelectedCells[0];
                 SelectedRowIndex = SelectedCell.RowIndex;
-                DisplayExpenses.Clear();
 
                 int id =int.Parse(DataView.Rows[SelectedRowIndex].Cells[3].Value+"");
-                int ExpenseToRemoveIndex=0;
-                int count = 0;
 
-                foreach (var expense in Expenses)
-                {
-                    if (expense.ID==id)
-                    {
-                        ExpenseToRemoveIndex = count;
-                    }
-                    else
-                        DisplayExpenses.Add(expense);
+                string DeleteQuery = $"delete from expense where Id={id}";
+                Command = new MySqlCommand(DeleteQuery,con);
+                Command.ExecuteNonQuery();
 
-                    count++;
-                }
+                string Query = CurrentQuery;
 
-                Expenses.RemoveAt(ExpenseToRemoveIndex);
-
-                DisplayContent();
+                DisplayContent(Query);
             }
         }
 
@@ -366,7 +372,13 @@ namespace ExpenseTracker
         private void FilterBtn_Click(object sender, EventArgs e)
         {
             FilterForm?.Dispose();
-            if (Expenses.Count > 0)
+
+            //Count the Category table
+            string CountQuery = "select count(*) from categories";
+            Command = new MySqlCommand(CountQuery,con);
+            int CountCateRow = Convert.ToInt32(Command.ExecuteScalar());
+
+            if (CountCateRow > 0)
             {
                 FilterForm = new FilterForm();
                 FilterForm.Show();

@@ -17,10 +17,8 @@ namespace ExpenseTracker
             InitializeComponent();
 
             CategoryCB.Items.Add("NA");
-            foreach (var cat in Form1.categories)
-            {
-                CategoryCB.Items.Add(cat.CategoryName);
-            }
+
+            Form1.FillComboBox(CategoryCB);
         }
 
         public EventHandler<string> OnFilterClick;
@@ -35,15 +33,18 @@ namespace ExpenseTracker
 
         private void CateFilter_Click(object sender, EventArgs e)
         {
-            Form1.DisplayExpenses.Clear();
-            foreach (var expense in Form1.Expenses)
-            {
-                if(expense.category==CategoryCB.Text)
-                    Form1.DisplayExpenses.Add(expense);
-            }
 
-            OnFilterClick?.Invoke(sender,"");
-            this.Dispose();
+            if (CheckCategory())
+            { 
+                string Query = $"select * from expense where Category='{CategoryCB.Text}'";
+
+                OnFilterClick?.Invoke(sender, Query);
+                this.Dispose();
+            }
+            else
+            {
+
+            }
         }
 
         private void DateFilter_Click(object sender, EventArgs e)
@@ -53,23 +54,14 @@ namespace ExpenseTracker
 
         private void Filter(DateTime Start,DateTime End)
         {
-            Form1.DisplayExpenses.Clear();
-            foreach (var expense in Form1.Expenses)
+            string query = $"select * from expense where Date >= '{Start:yyyy-MM-dd}' AND Date <= '{End:yyyy-MM-dd}'";
+
+            if (CheckCategory())
             {
-                if (CheckCategory())
-                {
-                    if (expense.category == CategoryCB.Text && expense.Date >= Start.Date && expense.Date <= End.Date)
-                        Form1.DisplayExpenses.Add(expense);
-                }
-                else
-                {
-                    if (expense.Date >= Start.Date && expense.Date <= End.Date)
-                    {
-                        Form1.DisplayExpenses.Add(expense);
-                    }
-                }
+                query = $"select * from expense where Category='{CategoryCB.Text}' AND Date >= '{Start:yyyy-MM-dd}' AND Date <= '{End:yyyy-MM-dd}'";
             }
-            OnFilterClick?.Invoke(this, "");
+
+            OnFilterClick?.Invoke(this, query);
             this.Dispose();
         }
 
