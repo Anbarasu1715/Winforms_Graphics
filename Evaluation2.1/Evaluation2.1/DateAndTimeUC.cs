@@ -45,7 +45,6 @@ namespace Evaluation2._1
         
 
         private void setToday(int curMonth, int curYear, DayOfWeek Day) {
-            
 
             int startIndexY = Getday(Day+"");
 
@@ -87,7 +86,6 @@ namespace Evaluation2._1
                 startIndexY = 1;
             }
 
-            //string d1 = CurrentDate.DayOfYear+"";
         }
 
         private void MouseEnter(object sender, EventArgs e)

@@ -371,7 +371,7 @@
             this.AddCategoryPanel.Controls.Add(this.label6);
             this.AddCategoryPanel.Location = new System.Drawing.Point(496, 50);
             this.AddCategoryPanel.Name = "AddCategoryPanel";
-            this.AddCategoryPanel.Size = new System.Drawing.Size(95, 46);
+            this.AddCategoryPanel.Size = new System.Drawing.Size(203, 221);
             this.AddCategoryPanel.TabIndex = 4;
             // 
             // label8

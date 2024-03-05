@@ -52,10 +52,6 @@ namespace ExpenseTracker
         private int ID=1050;
         public static string CurrentQuery = "Select * from expense";
 
-        //public static List<Category> categories = new List<Category>();
-        //public static List<Expense> Expenses = new List<Expense>();
-        //public static List<Expense> DisplayExpenses = new List<Expense>();
-
         public static void FillComboBox(Control cb)
         {
             //Retrive category from Database
@@ -148,6 +144,7 @@ namespace ExpenseTracker
                 try
                 {
                     Command.ExecuteNonQuery();
+                    CategoryCB.Items.Add(CateName);
                     WarningLabel.Text = "Added Successfully";
                 }
                 catch (Exception ex)
@@ -257,6 +254,7 @@ namespace ExpenseTracker
             DataView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             DataView.DefaultCellStyle.Font = new Font("Segoe UI semibold",9);
             DataView.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI Semibold", 12);
+            DataView.ReadOnly = true;
 
             string Query = "select * from expense";
             DisplayContent(Query);
@@ -305,6 +303,7 @@ namespace ExpenseTracker
             DataView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             DataView.DefaultCellStyle.Font = new Font("Segoe UI semibold", 9);
             DataView.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI Semibold", 12);
+            DataView.ReadOnly = true;
 
             DisplayContent(e);
         }
@@ -377,7 +376,7 @@ namespace ExpenseTracker
             string CountQuery = "select count(*) from categories";
             Command = new MySqlCommand(CountQuery,con);
             int CountCateRow = Convert.ToInt32(Command.ExecuteScalar());
-
+           
             if (CountCateRow > 0)
             {
                 FilterForm = new FilterForm();
