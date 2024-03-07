@@ -134,13 +134,18 @@ namespace StickyNotes
 
         private void label1_Click(object sender, EventArgs e)
         {
-            Point Loc = label1.PointToScreen(new Point(0,0));
-            OnOptionPanel?.Invoke(optionForm, Loc);
+            //Point Loc = label1.PointToScreen(new Point(0,0));
+            //OnOptionPanel?.Invoke(optionForm, Loc);
         }
 
         private void DisplayTextBox_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        internal void AddImage(object sender, string e)
+        {
+            
         }
 
         private void TimeLabel_Click(object sender, EventArgs e)

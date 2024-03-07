@@ -21,8 +21,10 @@ namespace StickyNotes
             this.BackColor = Color.Magenta;
             brush = new SolidBrush(ColorTranslator.FromHtml("#333333"));
             HomePanel.BackColor = ColorTranslator.FromHtml("#E6B905");
-            Editor_TextBox.Location = new Point(0, HomePanel.Height);
-            Editor_TextBox.Size = new Size(Width, Height - HomePanel.Height - Option_Panel.Height);
+            ImageBox.Dock = DockStyle.Top;
+            ImageBox.Size = new Size(0,0);
+            Editor_TextBox.Location = new Point(0, HomePanel.Height+ImageBox.Height);
+            Editor_TextBox.Size = new Size(Width, Height - HomePanel.Height - Option_Panel.Height- ImageBox.Height);
             Editor_TextBox.BackColor = ColorTranslator.FromHtml("#333333");
             Option_Panel.BackColor = ColorTranslator.FromHtml("#333333");
             Bold_PB.BackColor = ColorTranslator.FromHtml("#333333");
@@ -52,6 +54,7 @@ namespace StickyNotes
         public EventHandler OnCreateNote;
         public EventHandler OnDisplayList;
         public EventHandler OnDeleteNote;
+        public EventHandler<string> OnPathSelect;
 
         private string _contentText;
 
@@ -72,6 +75,9 @@ namespace StickyNotes
         {
             graphics = CreateGraphics();
             GraphicsPath path = new GraphicsPath();
+
+            Editor_TextBox.Location = new Point(0, HomePanel.Height + ImageBox.Height);
+            Editor_TextBox.Size = new Size(Width, Height - HomePanel.Height - Option_Panel.Height - ImageBox.Height);
 
             AddRoundRect(path, 0, 0, Width, Height, 10);
             graphics.FillPath(brush, path);
@@ -286,8 +292,69 @@ namespace StickyNotes
                     ToggleBulletPoint();
                     break;
                 case "Image_PB":
-                    
+                    AddingImagePath();
                     break;
+            }
+        }
+
+        private int numImages = 0;
+        private void AddingImagePath()
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+
+            openFileDialog.Title = "Browse Image File";
+            openFileDialog.Filter = "Image Files (*.png;*.jpg;*.jpeg;*.gif;*.bmp)|*.png;*.jpg;*.jpeg;*.gif;*.bmp|All files (*.*)|*.*";
+            openFileDialog.FilterIndex = 1;
+            openFileDialog.RestoreDirectory = true;
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string selectedImagePath = openFileDialog.FileName;
+                OnPathSelect?.Invoke(this, selectedImagePath);
+                numImages++;
+            }
+        }
+
+        private void AddPictureBoxes(string selectedImagePath)
+        {
+
+            int numRows = (int)Math.Ceiling(Math.Sqrt(numImages));
+            int numCols = (int)Math.Ceiling((double)numImages / numRows);
+            int pictureBoxWidth = ImageBox.Width / numCols;
+            int pictureBoxHeight = ImageBox.Height / numRows;
+
+            // Add picture boxes to the panel
+            int index = 0;
+            for (int row = 0; row < numRows; row++)
+            {
+                for (int col = 0; col < numCols; col++)
+                {
+                    PictureBox pictureBox = new PictureBox();
+                    pictureBox.SizeMode = PictureBoxSizeMode.Zoom; // Adjust the size mode as needed
+                    pictureBox.Location = new Point(col * pictureBoxWidth, row * pictureBoxHeight);
+                    pictureBox.Size = new Size(pictureBoxWidth, pictureBoxHeight);
+                    pictureBox.BackColor = Color.LightGray; // Optional: Set the background color
+                    pictureBox.BorderStyle = BorderStyle.FixedSingle; // Optional: Add a border
+                    pictureBox.Image = new Bitmap(selectedImagePath);// Set a default image
+                    ImageBox.Controls.Add(pictureBox);
+
+                    index++;
+                    if (index >= numImages)
+                        return;
+                }
+            }
+
+            // Add a "+" picture box if there are more images than displayed
+            if (numImages > numCols * numRows)
+            {
+                PictureBox plusPictureBox = new PictureBox();
+                plusPictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+                plusPictureBox.Location = new Point((numCols - 1) * pictureBoxWidth, (numRows - 1) * pictureBoxHeight);
+                plusPictureBox.Size = new Size(pictureBoxWidth, pictureBoxHeight);
+                plusPictureBox.BackColor = Color.LightGray;
+                plusPictureBox.BorderStyle = BorderStyle.FixedSingle;
+                plusPictureBox.Image = new Bitmap("C:\Users\Anbarasan\source\Winforms_Graphics\StickyNotes\StickyNotes\Resources\PlusIcon.pngs"); // Set the "+" icon image
+                ImageBox.Controls.Add(plusPictureBox);
             }
         }
 

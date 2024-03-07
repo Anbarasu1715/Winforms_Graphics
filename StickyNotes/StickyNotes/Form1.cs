@@ -80,11 +80,6 @@ namespace StickyNotes
             Settings_PB.BackColor = Color.Transparent;
         }
 
-        private void Settings_PB_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void Add_Lbl_MouseEnter(object sender, EventArgs e)
         {
             Add_Lbl.BackColor = ColorTranslator.FromHtml("#414141");
@@ -141,6 +136,7 @@ namespace StickyNotes
             note.OnCreateNote += Add_Lbl_Click;
             note.OnDisplayList += VisibleList;
             note.OnDeleteNote += DeleteNote;
+            note.OnPathSelect += displayNote.AddImage;
             note.Show();
 
             int count = pairs.Count;

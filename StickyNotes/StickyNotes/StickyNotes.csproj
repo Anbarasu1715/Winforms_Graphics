@@ -248,5 +248,17 @@
   <ItemGroup>
     <None Include="Resources\settings1.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Microsoft_Sticky_Notes_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Icon1.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Microsoft_Sticky_Notes_icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PlusIcon.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

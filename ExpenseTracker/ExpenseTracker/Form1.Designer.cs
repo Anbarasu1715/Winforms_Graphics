@@ -36,7 +36,6 @@
             this.DeleteBtn = new System.Windows.Forms.Button();
             this.UpdateBtn = new System.Windows.Forms.Button();
             this.AddBtn = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.AddExpensePanel = new System.Windows.Forms.Panel();
@@ -64,8 +63,8 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.ResultLbl = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.AddExpensePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AmountNB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DataView)).BeginInit();
@@ -73,6 +72,7 @@
             this.AddCategoryPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LimitNB)).BeginInit();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -182,16 +182,6 @@
             this.AddBtn.Text = "Add";
             this.AddBtn.UseVisualStyleBackColor = false;
             this.AddBtn.Click += new System.EventHandler(this.AddBtn_Click);
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = global::ExpenseTracker.Properties.Resources.ExpenseTracker;
-            this.pictureBox1.Location = new System.Drawing.Point(7, 24);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(54, 50);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 2;
-            this.pictureBox1.TabStop = false;
             // 
             // label2
             // 
@@ -326,8 +316,9 @@
             this.Column4});
             this.DataView.Location = new System.Drawing.Point(16, 50);
             this.DataView.Name = "DataView";
-            this.DataView.Size = new System.Drawing.Size(301, 221);
+            this.DataView.Size = new System.Drawing.Size(288, 221);
             this.DataView.TabIndex = 3;
+            this.DataView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataView_CellContentClick);
             // 
             // Column1
             // 
@@ -371,7 +362,7 @@
             this.AddCategoryPanel.Controls.Add(this.label6);
             this.AddCategoryPanel.Location = new System.Drawing.Point(496, 50);
             this.AddCategoryPanel.Name = "AddCategoryPanel";
-            this.AddCategoryPanel.Size = new System.Drawing.Size(203, 221);
+            this.AddCategoryPanel.Size = new System.Drawing.Size(112, 46);
             this.AddCategoryPanel.TabIndex = 4;
             // 
             // label8
@@ -470,6 +461,16 @@
             this.label10.TabIndex = 3;
             this.label10.Text = "Total Amount";
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::ExpenseTracker.Properties.Resources.ExpenseTracker;
+            this.pictureBox1.Location = new System.Drawing.Point(7, 24);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(54, 50);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 2;
+            this.pictureBox1.TabStop = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -486,7 +487,6 @@
             this.Move += new System.EventHandler(this.Form1_Move);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.AddExpensePanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.AmountNB)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DataView)).EndInit();
@@ -495,6 +495,7 @@
             this.AddCategoryPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LimitNB)).EndInit();
             this.panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }

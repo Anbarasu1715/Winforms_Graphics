@@ -27,6 +27,7 @@ namespace ExpenseTracker
             //DataBase Connection
             con = new MySqlConnection();
             string address = "server=localhost;port=3306;uid=root;pwd=lucid;database=expensetracker";
+            //string address = "server=192.168.3.55;port=3306;uid=user2;pwd=user2;database=practice";
             con.ConnectionString = address;
 
             try
@@ -280,6 +281,14 @@ namespace ExpenseTracker
                     DataView.Rows[RowIndex].Cells[2].Value = reader.GetDateTime(3).ToShortDateString();
                     DataView.Rows[RowIndex].Cells[3].Value = reader.GetInt32(0);
 
+
+                    //RowIndex = DataView.Rows.Add();
+                    //DataView.Rows[RowIndex].Cells[2].Value = reader.GetInt32(1);
+                    //DataView.Rows[RowIndex].Cells[1].Value = reader.GetDouble(2);
+                    ////DataView.Rows[RowIndex].Cells[2].Value = reader.GetString(3);
+                    //DataView.Rows[RowIndex].Cells[0].Value = reader.GetDateTime(4).ToShortDateString(); ;
+                    //DataView.Rows[RowIndex].Cells[3].Value = reader.GetInt32(0);
+
                     TotalAmount += Convert.ToDecimal(reader.GetDecimal(2));
                 }
 
@@ -365,7 +374,7 @@ namespace ExpenseTracker
 
                 DisplayContent(Query);
             }
-        }
+        } 
 
         private FilterForm FilterForm;
         private void FilterBtn_Click(object sender, EventArgs e)
@@ -385,6 +394,11 @@ namespace ExpenseTracker
             }
             else
                 WarningLabel.Text = "List Empty...!";
+        }
+
+        private void DataView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

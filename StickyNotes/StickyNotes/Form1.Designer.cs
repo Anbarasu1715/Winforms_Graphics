@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.panel1 = new System.Windows.Forms.Panel();
             this.Add_Lbl = new System.Windows.Forms.Label();
             this.Settings_PB = new System.Windows.Forms.PictureBox();
@@ -78,7 +79,7 @@
             this.Settings_PB.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.Settings_PB.TabIndex = 1;
             this.Settings_PB.TabStop = false;
-            this.Settings_PB.Click += new System.EventHandler(this.Settings_PB_Click);
+            this.Settings_PB.Click += new System.EventHandler(this.EstablishDB);
             this.Settings_PB.MouseEnter += new System.EventHandler(this.Settings_PB_MouseEnter);
             this.Settings_PB.MouseLeave += new System.EventHandler(this.Settings_PB_MouseLeave);
             // 
@@ -154,6 +155,7 @@
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
