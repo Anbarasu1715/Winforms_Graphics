@@ -10,8 +10,12 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 
+<<<<<<< HEAD
 
 //Original Copy
+=======
+//GIT CHANGED
+>>>>>>> 1d04d25cffa40420a38e02d5be08efef2632fb8d
 namespace ExpenseTracker
 {
     public partial class Form1 : Form
